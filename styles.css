@@ -63,12 +63,23 @@ nav {
   padding: 1.1rem 5%; background: rgba(253,248,245,.92);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
-  gap: 1rem; flex-wrap: nowrap;
+  gap: .75rem; flex-wrap: nowrap;
 }
+body.dark nav { background: rgba(15,15,15,.92); }
 .nav-logo { font-family: 'Bebas Neue', serif; font-size: 2rem; letter-spacing: .25em; color: var(--rose-dark); white-space: nowrap; flex-shrink: 0; }
-.nav-links { display: flex; gap: 1.5rem; flex-wrap: nowrap; }
+.nav-links { display: flex; gap: 1.5rem; flex-wrap: nowrap; flex: 1; }
 .nav-links a { font-size: .82rem; font-weight: 600; letter-spacing: .08em; color: var(--text-muted); transition: color .2s; white-space: nowrap; }
 .nav-links a:hover { color: var(--rose-dark); }
+
+/* Right-side nav actions — always visible, never shrink */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
 .hamburger { display: none; font-size: 1.5rem; cursor: pointer; color: var(--rose-dark); flex-shrink: 0; }
 
 /* ── HERO ── */
@@ -357,6 +368,8 @@ footer { background: #2a1c18; color: #c0a898; padding: 4rem 5% 1.5rem; }
   .newsletter form { flex-direction: column; align-items: center; }
   .newsletter input { border-right: 1.5px solid var(--border); border-bottom: none; border-radius: 30px; width: 100%; max-width: 340px; margin-bottom: .5rem; }
   .newsletter button { border-radius: 30px; }
+  /* Always show cart + profile on mobile */
+  .cart-icon, .nav-auth { display: flex !important; }
 }
 
 /* ── STAR RATING ── */
