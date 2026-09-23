@@ -985,21 +985,18 @@
       if (!container) return;
       const user = JSON.parse(localStorage.getItem('authUser') || 'null');
       if (!user) {
-        const btn = document.createElement('button');
-        btn.className = 'nav-login-btn';
-        btn.textContent = 'Login';
-        btn.onclick = () => window.location.href = 'login.html?redirect=profile.html';
-        container.appendChild(btn);
+        container.innerHTML = `<a class="nav-profile-btn" href="login.html?redirect=profile.html" title="Sign in">👤</a>`;
         return;
       }
       const p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
       const avatarSrc = p.avatar ||
-        `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=e8a0b0&color=fff&size=28&bold=true`;
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=e8a0b0&color=fff&size=36&bold=true`;
+      const firstName = user.name.split(' ')[0];
       container.innerHTML = `
-        <button class="nav-user-btn" id="nav-user-btn" onclick="toggleAuthDropdown()">
-          <img class="nav-user-avatar" src="${avatarSrc}" alt="${esc(user.name)}" />
-          <span>${esc(user.name.split(' ')[0])}</span>
-          <span class="nav-user-caret">▾</span>
+        <button class="nav-avatar-btn" id="nav-user-btn" onclick="toggleAuthDropdown()" title="${esc(user.name)}">
+          <img class="nav-avatar-img" src="${avatarSrc}" alt="${esc(firstName)}" />
+          <span class="nav-avatar-name">${esc(firstName)}</span>
+          <span class="nav-avatar-caret">▾</span>
         </button>
         <div class="nav-dropdown" id="nav-dropdown">
           <a href="dashboard.html">🛍 Dashboard</a>

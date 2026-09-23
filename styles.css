@@ -365,8 +365,69 @@ footer { background: #2a1c18; color: #c0a898; padding: 4rem 5% 1.5rem; }
 .star.on { color: #f5a623; }
 
 /* ── NAV AUTH ── */
-.nav-auth { position: relative; flex-shrink: 0; }
+.nav-auth { position: relative; flex-shrink: 0; display: flex; align-items: center; }
 
+/* Profile button — logged OUT */
+.nav-profile-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--blush);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color .2s, background .2s, transform .15s;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.nav-profile-btn:hover {
+  border-color: var(--rose-dark);
+  background: var(--rose-dark);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+/* Profile button — logged IN (avatar) */
+.nav-avatar-btn {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+}
+.nav-avatar-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--rose);
+  transition: border-color .2s, transform .15s;
+  flex-shrink: 0;
+}
+.nav-avatar-btn:hover .nav-avatar-img {
+  border-color: var(--rose-dark);
+  transform: scale(1.06);
+}
+.nav-avatar-name {
+  font-family: 'Lato', sans-serif;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--text);
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nav-avatar-caret { font-size: .6rem; color: var(--text-muted); }
+
+/* Keep the old classes working too (used by dashboard inline JS) */
 .nav-login-btn {
   background: none;
   border: 1.5px solid var(--rose-dark);

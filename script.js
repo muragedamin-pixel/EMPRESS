@@ -363,26 +363,25 @@ document.getElementById('newsletter-form').addEventListener('submit', e => {
   const user = JSON.parse(localStorage.getItem('authUser') || 'null');
 
   if (!user) {
-    // Not logged in — show Login button
-    const btn = document.createElement('button');
-    btn.className = 'nav-login-btn';
-    btn.textContent = 'Login';
-    btn.onclick = () => {
-      window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname.split('/').pop() || 'index.html');
-    };
-    container.appendChild(btn);
+    // Logged out — show a profile icon button linking to login
+    container.innerHTML = `
+      <a class="nav-profile-btn" href="login.html?redirect=profile.html" title="Sign in to your account">
+        👤
+      </a>`;
     return;
   }
 
-  // Logged in — show avatar + name with dropdown
-  const avatarSrc = JSON.parse(localStorage.getItem('sellerProfile') || '{}').avatar ||
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=e8a0b0&color=fff&size=28&bold=true`;
+  // Logged in — show avatar + first name + dropdown
+  const p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
+  const avatarSrc = p.avatar ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=e8a0b0&color=fff&size=36&bold=true`;
+  const firstName = user.name.split(' ')[0];
 
   container.innerHTML = `
-    <button class="nav-user-btn" id="nav-user-btn" onclick="toggleAuthDropdown()">
-      <img class="nav-user-avatar" src="${avatarSrc}" alt="${user.name}" />
-      <span>${user.name.split(' ')[0]}</span>
-      <span class="nav-user-caret">▾</span>
+    <button class="nav-avatar-btn" id="nav-user-btn" onclick="toggleAuthDropdown()" title="${user.name}">
+      <img class="nav-avatar-img" src="${avatarSrc}" alt="${firstName}" />
+      <span class="nav-avatar-name">${firstName}</span>
+      <span class="nav-avatar-caret">▾</span>
     </button>
     <div class="nav-dropdown" id="nav-dropdown">
       <a href="profile.html">👤 My Profile</a>
@@ -392,7 +391,7 @@ document.getElementById('newsletter-form').addEventListener('submit', e => {
     </div>
   `;
 
-  // Close dropdown when clicking outside
+  // Close dropdown on outside click
   document.addEventListener('click', (e) => {
     const dropdown = document.getElementById('nav-dropdown');
     const btn = document.getElementById('nav-user-btn');
