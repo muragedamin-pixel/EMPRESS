@@ -419,6 +419,12 @@
       <li><a href="index.html#about">About</a></li>
     </ul>
     <a href="index.html" class="btn-primary" style="font-size:.8rem;padding:.65rem 1.5rem">← Back to Store</a>
+
+    <!-- Auth button / user menu -->
+    <div class="nav-auth" id="nav-auth">
+      <!-- Filled by JS -->
+    </div>
+
     <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode">🌙</button>
     <div class="hamburger" id="hamburger">&#9776;</div>
   </nav>
@@ -793,6 +799,57 @@
     loadProfile();
     renderListings();
     updateStats();
+    initNavAuth();
+
+    function initNavAuth() {
+      const container = document.getElementById('nav-auth');
+      if (!container) return;
+
+      const user = JSON.parse(localStorage.getItem('authUser') || 'null');
+
+      if (!user) {
+        const btn = document.createElement('button');
+        btn.className = 'nav-login-btn';
+        btn.textContent = 'Login';
+        btn.onclick = () => window.location.href = 'login.html?redirect=dashboard.html';
+        container.appendChild(btn);
+        return;
+      }
+
+      const avatarSrc = JSON.parse(localStorage.getItem('sellerProfile') || '{}').avatar ||
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=e8a0b0&color=fff&size=28&bold=true`;
+
+      container.innerHTML = `
+        <button class="nav-user-btn" id="nav-user-btn" onclick="toggleAuthDropdown()">
+          <img class="nav-user-avatar" src="${avatarSrc}" alt="${user.name}" />
+          <span>${user.name.split(' ')[0]}</span>
+          <span class="nav-user-caret">▾</span>
+        </button>
+        <div class="nav-dropdown" id="nav-dropdown">
+          <a href="index.html">🏪 Back to Store</a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-logout" onclick="logOut()">Sign Out</button>
+        </div>
+      `;
+
+      document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('nav-dropdown');
+        const btn = document.getElementById('nav-user-btn');
+        if (dropdown && !dropdown.contains(e.target) && btn && !btn.contains(e.target)) {
+          dropdown.classList.remove('open');
+        }
+      });
+    }
+
+    function toggleAuthDropdown() {
+      document.getElementById('nav-dropdown')?.classList.toggle('open');
+    }
+
+    function logOut() {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('authUser');
+      window.location.href = 'index.html';
+    }
   </script>
 </body>
 </html>
