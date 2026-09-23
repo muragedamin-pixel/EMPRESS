@@ -11,6 +11,47 @@ themeBtn.addEventListener('click', () => {
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
+// ── LOAD SELLER LISTINGS FROM DASHBOARD ──────────────────────────────────────
+// Injects items added via dashboard.html into the products grid
+(function injectSellerListings() {
+  const listings = JSON.parse(localStorage.getItem('sellerListings') || '[]');
+  if (!listings.length) return;
+
+  const grid = document.getElementById('products');
+  const catIcons = { bags: '👜', shoes: '👠', clothing: '👗' };
+  const catLabels = { bags: 'Handbag', shoes: 'Shoes', clothing: 'Clothing' };
+
+  listings.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'product-card hidden'; // hidden until filter applied
+    card.dataset.cat = item.cat;
+    card.dataset.sellerItem = 'true';
+
+    card.innerHTML = `
+      <span class="badge">New</span>
+      <div class="product-img">
+        ${item.img
+          ? `<img src="${item.img}" alt="${escHtmlStore(item.name)}" />`
+          : `<span style="font-size:3rem">${catIcons[item.cat] || '🛍'}</span>`}
+        <div class="overlay"><button class="quick-add">Quick Add</button></div>
+      </div>
+      <span class="product-tag">${catLabels[item.cat] || item.cat}</span>
+      <h4>${escHtmlStore(item.name)}</h4>
+      <strong>${escHtmlStore(item.priceLabel)}</strong>
+    `;
+
+    grid.appendChild(card);
+  });
+})();
+
+function escHtmlStore(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 // ── HERO SLIDESHOW ──
 const slides = document.querySelectorAll('.hero-slideshow .slide');
 let current = 0;
@@ -69,13 +110,21 @@ tabs.forEach(tab => {
   tab.addEventListener('click', () => applyFilter(tab.dataset.filter));
 });
 
-// Click bag/shoe card → product page
+// Click bag/shoe card → product page (hardcoded items) or add to cart (seller items)
 document.querySelectorAll('.product-card[data-cat="bags"], .product-card[data-cat="shoes"]').forEach(card => {
   card.style.cursor = 'pointer';
   card.addEventListener('click', (e) => {
     if (e.target.classList.contains('quick-add')) return;
-    const img = card.querySelector('img')?.src || '';
-    const name = card.querySelector('h4')?.textContent || '';
+    // Seller-added items go straight to cart via quick-add; clicking card also adds
+    if (card.dataset.sellerItem === 'true') {
+      const name  = card.querySelector('h4')?.textContent || '';
+      const price = card.querySelector('strong')?.textContent || '';
+      const img   = card.querySelector('img')?.src || '';
+      addToCart(name, price, img);
+      return;
+    }
+    const img   = card.querySelector('img')?.src || '';
+    const name  = card.querySelector('h4')?.textContent || '';
     const price = card.querySelector('strong')?.textContent || '';
     window.location.href = `product.html?img=${encodeURIComponent(img)}&name=${encodeURIComponent(name)}&price=${encodeURIComponent(price)}`;
   });
