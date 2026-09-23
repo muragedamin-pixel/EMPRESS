@@ -385,6 +385,7 @@ document.getElementById('newsletter-form').addEventListener('submit', e => {
       <span class="nav-user-caret">▾</span>
     </button>
     <div class="nav-dropdown" id="nav-dropdown">
+      <a href="profile.html">👤 My Profile</a>
       <a href="dashboard.html">🛍 My Dashboard</a>
       <div class="dropdown-divider"></div>
       <button class="dropdown-logout" onclick="logOut()">Sign Out</button>

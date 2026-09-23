@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRE LOVED — My Profile</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+
+    /* ─── PAGE WRAPPER ─────────────────────────────────────── */
+    .profile-page {
+      max-width: 860px;
+      margin: 5.5rem auto 6rem;
+      padding: 0 5%;
+    }
+
+    /* ─── PROFILE HERO ─────────────────────────────────────── */
+    .profile-hero {
+      display: flex;
+      align-items: flex-end;
+      gap: 2rem;
+      flex-wrap: wrap;
+      padding: 2.5rem 2rem 2rem;
+      background: linear-gradient(135deg, var(--blush) 0%, var(--bg) 100%);
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    /* big avatar */
+    .ph-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .ph-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--white);
+      box-shadow: 0 4px 18px rgba(196,96,122,.2);
+    }
+    .ph-avatar-edit {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--rose-dark);
+      color: #fff;
+      border: 2px solid var(--white);
+      font-size: .9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    #ph-avatar-input { display: none; }
+
+    .ph-info { flex: 1; min-width: 200px; }
+    .ph-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--text);
+      margin-bottom: .2rem;
+    }
+    .ph-email {
+      font-size: .85rem;
+      color: var(--text-muted);
+      margin-bottom: .6rem;
+    }
+    .ph-badges { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .ph-badge {
+      background: var(--rose-dark);
+      color: #fff;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .25rem .75rem;
+      border-radius: 20px;
+    }
+    .ph-badge.seller { background: #1a7a3a; }
+    body.dark .ph-badge.seller { background: #2a5a35; }
+
+    /* ─── TAB NAV ───────────────────────────────────────────── */
+    .profile-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .ptab {
+      background: none;
+      border: none;
+      padding: .9rem 1.75rem;
+      font-family: 'Lato', sans-serif;
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color .2s, border-color .2s;
+    }
+    .ptab.active { color: var(--rose-dark); border-bottom-color: var(--rose-dark); }
+    .ptab:hover:not(.active) { color: var(--text); }
+
+    .ptab-panel { display: none; }
+    .ptab-panel.active { display: block; }
+
+    /* ─── SHARED FORM PARTS ─────────────────────────────────── */
+    .pcard {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .pcard-title {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--tan);
+      margin-bottom: 1.25rem;
+    }
+
+    .frow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .frow.single { grid-template-columns: 1fr; }
+
+    .fgroup {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+    }
+    .fgroup label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .fgroup input,
+    .fgroup select,
+    .fgroup textarea {
+      padding: .75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .2s;
+      width: 100%;
+    }
+    .fgroup input:focus,
+    .fgroup select:focus,
+    .fgroup textarea:focus { border-color: var(--rose-dark); }
+    .fgroup textarea { resize: vertical; min-height: 90px; }
+    .fgroup select { cursor: pointer; }
+    .fgroup .hint {
+      font-size: .72rem;
+      color: var(--text-muted);
+      margin-top: .15rem;
+    }
+
+    .form-save-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: .5rem;
+      flex-wrap: wrap;
+    }
+    .saved-tick {
+      font-size: .82rem;
+      font-weight: 700;
+      color: #1a7a3a;
+      display: none;
+    }
+
+    /* ─── PHOTO GRID (market item) ──────────────────────────── */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .75rem;
+      margin-bottom: 1.25rem;
+    }
+    .photo-slot {
+      aspect-ratio: 1;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .photo-slot:hover { border-color: var(--rose-dark); background: var(--blush); }
+    .photo-slot.filled { border-style: solid; border-color: var(--rose); }
+    .photo-slot img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .photo-slot .slot-icon { font-size: 1.6rem; pointer-events: none; }
+    .photo-slot .slot-label {
+      font-size: .65rem;
+      color: var(--text-muted);
+      margin-top: .25rem;
+      pointer-events: none;
+    }
+    .photo-slot .slot-remove {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 22px;
+      height: 22px;
+      background: rgba(0,0,0,.55);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: .7rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .photo-slot.filled .slot-remove { display: flex; }
+    .photo-slot.filled .slot-icon,
+    .photo-slot.filled .slot-label { display: none; }
+    .photo-main-label {
+      font-size: .72rem;
+      color: var(--tan);
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+    #photo-inputs { display: none; }
+
+    /* ─── PRICE TAG preview ─────────────────────────────────── */
+    .price-preview {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-top: .35rem;
+    }
+    .price-preview-tag {
+      background: var(--blush);
+      border: 1px solid var(--rose);
+      color: var(--rose-dark);
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: .3rem .9rem;
+      border-radius: 20px;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    /* ─── LISTING SUCCESS BANNER ────────────────────────────── */
+    .list-success {
+      display: none;
+      background: #d4f5de;
+      border: 1.5px solid #7acc7a;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #1a5a2a;
+      font-weight: 600;
+    }
+    body.dark .list-success {
+      background: #0d2a15;
+      border-color: #2a6a35;
+      color: #5acc7a;
+    }
+    .list-success.show { display: flex; align-items: center; gap: .75rem; }
+
+    /* ─── MARKET LISTINGS PREVIEW ───────────────────────────── */
+    .my-items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .mi-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .mi-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(196,96,122,.1); }
+    .mi-img {
+      height: 160px;
+      background: var(--tan-light);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mi-img img { width: 100%; height: 100%; object-fit: cover; }
+    .mi-img .mi-icon { font-size: 2.5rem; }
+    .mi-body { padding: .75rem 1rem .9rem; }
+    .mi-name { font-size: .9rem; color: var(--text); font-family: 'Playfair Display', serif; margin-bottom: .25rem; }
+    .mi-price { font-size: 1rem; color: var(--rose-dark); font-weight: 700; font-family: 'Playfair Display', serif; }
+    .mi-cat { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--tan); margin-bottom: .2rem; }
+    .mi-actions { display: flex; gap: .5rem; margin-top: .6rem; }
+    .mi-del {
+      background: none; border: 1.5px solid #e05050; color: #e05050;
+      padding: .3rem .7rem; border-radius: 20px; font-size: .7rem;
+      font-weight: 700; cursor: pointer; font-family: 'Lato', sans-serif;
+      transition: all .2s;
+    }
+    .mi-del:hover { background: #e05050; color: #fff; }
+
+    .mi-empty {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 2.5rem;
+      color: var(--text-muted);
+      font-size: .9rem;
+    }
+
+    /* ─── FORM ERROR ─────────────────────────────────────────── */
+    .ferror {
+      font-size: .8rem;
+      color: #e05050;
+      font-weight: 600;
+      display: none;
+      margin-top: .5rem;
+    }
+
+    /* ─── TOAST ──────────────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1a1a1a;
+      color: #fff;
+      padding: .85rem 2rem;
+      border-radius: 30px;
+      font-size: .88rem;
+      font-weight: 600;
+      z-index: 999;
+      transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .35s;
+      opacity: 0;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .frow { grid-template-columns: 1fr; }
+      .photo-grid { grid-template-columns: repeat(2, 1fr); }
+      .profile-hero { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">PRE LOVED</div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html#categories">Shop</a></li>
+      <li><a href="index.html#collection">Collection</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+    <div class="nav-auth" id="nav-auth"></div>
+    <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode">🌙</button>
+    <div class="hamburger" id="hamburger">&#9776;</div>
+  </nav>
+
+  <div class="profile-page">
+
+    <!-- ── HERO / COVER ─────────────────────────────────────── -->
+    <div class="profile-hero">
+      <div class="ph-avatar-wrap">
+        <img class="ph-avatar" id="ph-avatar" src="" alt="Profile photo" />
+        <button class="ph-avatar-edit" title="Change photo" onclick="document.getElementById('ph-avatar-input').click()">✎</button>
+        <input type="file" id="ph-avatar-input" accept="image/*" />
+      </div>
+      <div class="ph-info">
+        <div class="ph-name" id="ph-name">—</div>
+        <div class="ph-email" id="ph-email">—</div>
+        <div class="ph-badges">
+          <span class="ph-badge">Member</span>
+          <span class="ph-badge seller" id="ph-seller-badge" style="display:none">Seller</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TABS ─────────────────────────────────────────────── -->
+    <div class="profile-tabs">
+      <button class="ptab active" data-tab="info"   onclick="switchTab('info')">👤 Personal Info</button>
+      <button class="ptab"        data-tab="market" onclick="switchTab('market')">🛍 Market Item</button>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!--  TAB 1 — PERSONAL INFORMATION                         -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="ptab-panel active" id="panel-info">
+
+      <!-- Basic details -->
+      <div class="pcard">
+        <div class="pcard-title">Basic Details</div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>Full Name</label>
+            <input type="text" id="pi-name" placeholder="Your full name" autocomplete="name" />
+          </div>
+          <div class="fgroup">
+            <label>Display Name / Username</label>
+            <input type="text" id="pi-username" placeholder="e.g. @fashionista_nairobi" maxlength="30" />
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>Email Address</label>
+            <input type="email" id="pi-email" placeholder="you@email.com" autocomplete="email" />
+          </div>
+          <div class="fgroup">
+            <label>Phone Number</label>
+            <input type="tel" id="pi-phone" placeholder="e.g. 0712 345 678" autocomplete="tel" />
+          </div>
+        </div>
+        <div class="frow single">
+          <div class="fgroup">
+            <label>Bio</label>
+            <textarea id="pi-bio" placeholder="Tell buyers a little about yourself and your style…" maxlength="200"></textarea>
+            <span class="hint">Max 200 characters</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location & preferences -->
+      <div class="pcard">
+        <div class="pcard-title">Location & Preferences</div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>City / Town</label>
+            <input type="text" id="pi-city" placeholder="e.g. Nairobi" />
+          </div>
+          <div class="fgroup">
+            <label>Preferred Payment</label>
+            <select id="pi-payment">
+              <option value="">Select…</option>
+              <option value="M-Pesa">M-Pesa</option>
+              <option value="Visa">Visa / Mastercard</option>
+              <option value="PayPal">PayPal</option>
+              <option value="Equity">Equity Bank</option>
+            </select>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>Instagram Handle</label>
+            <input type="text" id="pi-instagram" placeholder="@yourhandle" maxlength="40" />
+          </div>
+          <div class="fgroup">
+            <label>TikTok Handle</label>
+            <input type="text" id="pi-tiktok" placeholder="@yourhandle" maxlength="40" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Change password -->
+      <div class="pcard">
+        <div class="pcard-title">Change Password</div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>New Password</label>
+            <input type="password" id="pi-pw1" placeholder="At least 6 characters" autocomplete="new-password" />
+          </div>
+          <div class="fgroup">
+            <label>Confirm New Password</label>
+            <input type="password" id="pi-pw2" placeholder="Repeat password" autocomplete="new-password" />
+          </div>
+        </div>
+        <div class="ferror" id="pw-error"></div>
+      </div>
+
+      <div class="form-save-bar">
+        <button class="btn-primary" onclick="savePersonalInfo()">Save Changes</button>
+        <button class="btn-ghost"   onclick="loadPersonalInfo()">Discard</button>
+        <span class="saved-tick" id="info-saved-tick">✓ Changes saved!</span>
+      </div>
+
+    </div><!-- /panel-info -->
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!--  TAB 2 — MARKET ITEM                                  -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="ptab-panel" id="panel-market">
+
+      <!-- Success banner -->
+      <div class="list-success" id="list-success">
+        <span style="font-size:1.5rem">🎉</span>
+        <span id="list-success-msg">Item listed successfully!</span>
+      </div>
+
+      <!-- Photos -->
+      <div class="pcard">
+        <div class="pcard-title">Product Photos</div>
+        <p class="photo-main-label">Main photo (slot 1) will appear as the cover image</p>
+        <div class="photo-grid" id="photo-grid">
+          <!-- 4 slots injected by JS -->
+        </div>
+        <div id="photo-inputs"></div>
+        <span class="ferror" id="photo-error">Please upload at least one product photo.</span>
+      </div>
+
+      <!-- Item details -->
+      <div class="pcard">
+        <div class="pcard-title">Item Details</div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>Item Name *</label>
+            <input type="text" id="mi-name" placeholder="e.g. Brown Croc-Embossed Tote" maxlength="60" />
+          </div>
+          <div class="fgroup">
+            <label>Category *</label>
+            <select id="mi-cat">
+              <option value="">Select category…</option>
+              <option value="bags">Handbag / Bag</option>
+              <option value="shoes">Shoes / Heels</option>
+              <option value="clothing">Clothing / Dress</option>
+            </select>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>Condition *</label>
+            <select id="mi-condition">
+              <option value="Like New">Like New — barely used</option>
+              <option value="Excellent">Excellent — minor signs of use</option>
+              <option value="Good">Good — light wear</option>
+              <option value="Fair">Fair — visible wear, great price</option>
+            </select>
+          </div>
+          <div class="fgroup">
+            <label>Brand (optional)</label>
+            <input type="text" id="mi-brand" placeholder="e.g. Zara, Gucci, Unknown" maxlength="40" />
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>Colour</label>
+            <input type="text" id="mi-colour" placeholder="e.g. Nude, Black, Olive Green" maxlength="40" />
+          </div>
+          <div class="fgroup">
+            <label>Size (if applicable)</label>
+            <input type="text" id="mi-size" placeholder="e.g. 38, M, One Size" maxlength="20" />
+          </div>
+        </div>
+        <div class="frow single">
+          <div class="fgroup">
+            <label>Description *</label>
+            <textarea id="mi-desc" placeholder="Describe the item — material, style, any flaws, measurements, how it was used…" maxlength="500"></textarea>
+            <span class="hint">Max 500 characters</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing -->
+      <div class="pcard">
+        <div class="pcard-title">Pricing</div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>Asking Price (Ksh) *</label>
+            <input type="number" id="mi-price" placeholder="e.g. 4500" min="1" oninput="updatePricePreview()" />
+            <div class="price-preview">
+              <span style="font-size:.78rem;color:var(--text-muted)">Preview:</span>
+              <span class="price-preview-tag" id="price-preview-tag">Ksh —</span>
+            </div>
+          </div>
+          <div class="fgroup">
+            <label>Negotiable?</label>
+            <select id="mi-negotiable">
+              <option value="yes">Yes — open to offers</option>
+              <option value="no">No — fixed price</option>
+            </select>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>Delivery / Pickup</label>
+            <select id="mi-delivery">
+              <option value="delivery">Delivery available</option>
+              <option value="pickup">Pickup only</option>
+              <option value="both">Both delivery & pickup</option>
+            </select>
+          </div>
+          <div class="fgroup">
+            <label>Item Location</label>
+            <input type="text" id="mi-location" placeholder="e.g. Westlands, Nairobi" maxlength="60" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact for this item -->
+      <div class="pcard">
+        <div class="pcard-title">Contact for This Item</div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>WhatsApp / Phone</label>
+            <input type="tel" id="mi-contact-phone" placeholder="e.g. 0712 345 678" />
+            <span class="hint">Buyers will use this number to enquire</span>
+          </div>
+          <div class="fgroup">
+            <label>Preferred Contact Method</label>
+            <select id="mi-contact-method">
+              <option value="whatsapp">WhatsApp</option>
+              <option value="call">Phone Call</option>
+              <option value="both">WhatsApp & Call</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <span class="ferror" id="market-error" style="display:block;margin-bottom:1rem"></span>
+
+      <div class="form-save-bar">
+        <button class="btn-primary" onclick="listMarketItem()">✦ List Item for Sale</button>
+        <button class="btn-ghost"   onclick="clearMarketForm()">Clear Form</button>
+      </div>
+
+      <!-- My listed items -->
+      <div style="margin-top:3rem">
+        <div style="font-size:1.4rem;font-family:'Playfair Display',serif;color:var(--text);margin-bottom:.3rem">My Listed Items</div>
+        <div style="font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--tan);margin-bottom:1.25rem">Items currently in the store</div>
+        <div class="my-items-grid" id="my-items-grid">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+    </div><!-- /panel-market -->
+
+  </div><!-- /profile-page -->
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── SERVER URL ─────────────────────────────────────────────────────────────
+    const SERVER_URL = 'https://your-railway-url.up.railway.app';
+
+    // ── THEME ──────────────────────────────────────────────────────────────────
+    const themeBtn = document.getElementById('theme-toggle');
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+      themeBtn.textContent = '☀️';
+    }
+    themeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      themeBtn.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // ── HAMBURGER ──────────────────────────────────────────────────────────────
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('nav-links').classList.toggle('open');
+    });
+
+    // ── TOAST ──────────────────────────────────────────────────────────────────
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    // ── TAB SWITCH ─────────────────────────────────────────────────────────────
+    function switchTab(tab) {
+      document.querySelectorAll('.ptab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+      document.querySelectorAll('.ptab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + tab));
+    }
+
+    // ── ESCAPE HELPER ──────────────────────────────────────────────────────────
+    function esc(str) {
+      return String(str || '')
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── PROFILE HERO ───────────────────────────────────────────────────────────
+    function renderHero() {
+      const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+      const profile  = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
+      const listings = JSON.parse(localStorage.getItem('sellerListings') || '[]');
+
+      const name  = profile.name  || authUser.name  || 'Your Name';
+      const email = profile.email || authUser.email || '';
+      const avatar = profile.avatar ||
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=e8a0b0&color=fff&size=110&bold=true`;
+
+      document.getElementById('ph-avatar').src = avatar;
+      document.getElementById('ph-name').textContent  = name;
+      document.getElementById('ph-email').textContent = email;
+
+      if (listings.length > 0) {
+        document.getElementById('ph-seller-badge').style.display = 'inline-flex';
+      }
+    }
+
+    // ── AVATAR UPLOAD ──────────────────────────────────────────────────────────
+    document.getElementById('ph-avatar-input').addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('ph-avatar').src = e.target.result;
+        const p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
+        localStorage.setItem('sellerProfile', JSON.stringify({ ...p, avatar: e.target.result, avatarCustom: true }));
+        showToast('Profile photo updated ✓');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // ── PERSONAL INFO LOAD ─────────────────────────────────────────────────────
+    function loadPersonalInfo() {
+      const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+      const p        = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
+
+      document.getElementById('pi-name').value      = p.name      || authUser.name  || '';
+      document.getElementById('pi-email').value     = p.email     || authUser.email || '';
+      document.getElementById('pi-phone').value     = p.phone     || '';
+      document.getElementById('pi-username').value  = p.username  || '';
+      document.getElementById('pi-bio').value       = p.bio       || '';
+      document.getElementById('pi-city').value      = p.city      || '';
+      document.getElementById('pi-payment').value   = p.payment   || '';
+      document.getElementById('pi-instagram').value = p.instagram || '';
+      document.getElementById('pi-tiktok').value    = p.tiktok    || '';
+      document.getElementById('pi-pw1').value = '';
+      document.getElementById('pi-pw2').value = '';
+    }
+
+    // ── PERSONAL INFO SAVE ─────────────────────────────────────────────────────
+    async function savePersonalInfo() {
+      const pw1 = document.getElementById('pi-pw1').value;
+      const pw2 = document.getElementById('pi-pw2').value;
+      const pwErr = document.getElementById('pw-error');
+      pwErr.style.display = 'none';
+
+      if (pw1 || pw2) {
+        if (pw1.length < 6) { pwErr.textContent = 'Password must be at least 6 characters.'; pwErr.style.display = 'block'; return; }
+        if (pw1 !== pw2)    { pwErr.textContent = 'Passwords do not match.'; pwErr.style.display = 'block'; return; }
+      }
+
+      const p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
+      const updated = {
+        ...p,
+        name:      document.getElementById('pi-name').value.trim(),
+        email:     document.getElementById('pi-email').value.trim(),
+        phone:     document.getElementById('pi-phone').value.trim(),
+        username:  document.getElementById('pi-username').value.trim(),
+        bio:       document.getElementById('pi-bio').value.trim(),
+        city:      document.getElementById('pi-city').value.trim(),
+        payment:   document.getElementById('pi-payment').value,
+        instagram: document.getElementById('pi-instagram').value.trim(),
+        tiktok:    document.getElementById('pi-tiktok').value.trim(),
+      };
+      localStorage.setItem('sellerProfile', JSON.stringify(updated));
+
+      // Sync name to authUser
+      const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+      if (updated.name) {
+        authUser.name = updated.name;
+        localStorage.setItem('authUser', JSON.stringify(authUser));
+      }
+
+      renderHero();
+
+      const tick = document.getElementById('info-saved-tick');
+      tick.style.display = 'inline';
+      setTimeout(() => tick.style.display = 'none', 2500);
+      showToast('✓ Profile updated');
+    }
+
+    // ── PHOTO SLOTS ────────────────────────────────────────────────────────────
+    const MAX_PHOTOS = 4;
+    const photoData  = [null, null, null, null]; // base64 or null per slot
+
+    function buildPhotoGrid() {
+      const grid = document.getElementById('photo-grid');
+      grid.innerHTML = '';
+      for (let i = 0; i < MAX_PHOTOS; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'photo-slot' + (photoData[i] ? ' filled' : '');
+        slot.id = `photo-slot-${i}`;
+        slot.onclick = () => triggerPhotoInput(i);
+        slot.innerHTML = photoData[i]
+          ? `<img src="${photoData[i]}" alt="Photo ${i+1}" />
+             <button class="slot-remove" onclick="removePhoto(event,${i})">✕</button>`
+          : `<span class="slot-icon">${i === 0 ? '📷' : '+'}</span>
+             <span class="slot-label">${i === 0 ? 'Main' : 'Photo ' + (i+1)}</span>`;
+        grid.appendChild(slot);
+      }
+    }
+
+    function triggerPhotoInput(index) {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = function () {
+        const file = this.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) { showToast('⚠ Max 5 MB per photo'); return; }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          photoData[index] = e.target.result;
+          buildPhotoGrid();
+        };
+        reader.readAsDataURL(file);
+      };
+      input.click();
+    }
+
+    function removePhoto(e, index) {
+      e.stopPropagation();
+      photoData[index] = null;
+      buildPhotoGrid();
+    }
+
+    // ── PRICE PREVIEW ──────────────────────────────────────────────────────────
+    function updatePricePreview() {
+      const raw = document.getElementById('mi-price').value;
+      const tag = document.getElementById('price-preview-tag');
+      const num = parseInt(raw, 10);
+      tag.textContent = isNaN(num) ? 'Ksh —' : 'Ksh ' + num.toLocaleString();
+    }
+
+    // ── LIST MARKET ITEM ───────────────────────────────────────────────────────
+    function listMarketItem() {
+      const name      = document.getElementById('mi-name').value.trim();
+      const cat       = document.getElementById('mi-cat').value;
+      const condition = document.getElementById('mi-condition').value;
+      const brand     = document.getElementById('mi-brand').value.trim();
+      const colour    = document.getElementById('mi-colour').value.trim();
+      const size      = document.getElementById('mi-size').value.trim();
+      const desc      = document.getElementById('mi-desc').value.trim();
+      const priceRaw  = document.getElementById('mi-price').value.trim();
+      const nego      = document.getElementById('mi-negotiable').value;
+      const delivery  = document.getElementById('mi-delivery').value;
+      const location  = document.getElementById('mi-location').value.trim();
+      const phone     = document.getElementById('mi-contact-phone').value.trim();
+      const contactM  = document.getElementById('mi-contact-method').value;
+      const errEl     = document.getElementById('market-error');
+      const photoErrEl = document.getElementById('photo-error');
+
+      errEl.style.display = 'none';
+      photoErrEl.style.display = 'none';
+
+      const hasPhoto = photoData.some(d => d !== null);
+
+      if (!name || !cat || !desc || !priceRaw) {
+        errEl.textContent = 'Please fill in all required fields (name, category, description, price).';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (!hasPhoto) {
+        photoErrEl.style.display = 'block';
+        document.getElementById('photo-grid').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
+      const price = parseInt(priceRaw, 10);
+      const listing = {
+        id:         Date.now(),
+        name,
+        cat,
+        condition,
+        brand,
+        colour,
+        size,
+        desc,
+        price,
+        priceLabel: 'Ksh ' + price.toLocaleString(),
+        negotiable: nego,
+        delivery,
+        location,
+        phone,
+        contactMethod: contactM,
+        img:        photoData.find(d => d !== null), // first non-null as cover
+        photos:     photoData.filter(d => d !== null),
+        createdAt:  new Date().toISOString(),
+        status:     'live',
+      };
+
+      const listings = JSON.parse(localStorage.getItem('sellerListings') || '[]');
+      listings.unshift(listing);
+      localStorage.setItem('sellerListings', JSON.stringify(listings));
+
+      // Show success banner
+      const banner = document.getElementById('list-success');
+      document.getElementById('list-success-msg').textContent =
+        `"${name}" is now live in the store for ${listing.priceLabel}!`;
+      banner.classList.add('show');
+      setTimeout(() => banner.classList.remove('show'), 5000);
+
+      clearMarketForm();
+      renderMyItems();
+      showToast('🎉 Listed for sale!');
+      // Mark seller badge
+      document.getElementById('ph-seller-badge').style.display = 'inline-flex';
+    }
+
+    function clearMarketForm() {
+      ['mi-name','mi-brand','mi-colour','mi-size','mi-desc','mi-price','mi-location','mi-contact-phone']
+        .forEach(id => document.getElementById(id).value = '');
+      document.getElementById('mi-cat').value = '';
+      document.getElementById('mi-condition').value = 'Like New';
+      document.getElementById('mi-negotiable').value = 'yes';
+      document.getElementById('mi-delivery').value = 'delivery';
+      document.getElementById('mi-contact-method').value = 'whatsapp';
+      document.getElementById('price-preview-tag').textContent = 'Ksh —';
+      for (let i = 0; i < MAX_PHOTOS; i++) photoData[i] = null;
+      buildPhotoGrid();
+    }
+
+    // ── RENDER MY ITEMS ────────────────────────────────────────────────────────
+    const catLabels = { bags: 'Handbag', shoes: 'Shoes', clothing: 'Clothing' };
+    const catIcons  = { bags: '👜', shoes: '👠', clothing: '👗' };
+
+    function renderMyItems() {
+      const grid = document.getElementById('my-items-grid');
+      const listings = JSON.parse(localStorage.getItem('sellerListings') || '[]');
+
+      if (!listings.length) {
+        grid.innerHTML = '<div class="mi-empty">You have no active listings yet.</div>';
+        return;
+      }
+
+      grid.innerHTML = listings.map(l => `
+        <div class="mi-card">
+          <div class="mi-img">
+            ${l.img ? `<img src="${l.img}" alt="${esc(l.name)}" />` : `<span class="mi-icon">${catIcons[l.cat] || '🛍'}</span>`}
+          </div>
+          <div class="mi-body">
+            <div class="mi-cat">${catLabels[l.cat] || l.cat}</div>
+            <div class="mi-name">${esc(l.name)}</div>
+            <div class="mi-price">${esc(l.priceLabel)}</div>
+            ${l.condition ? `<div style="font-size:.72rem;color:var(--text-muted);margin-top:.2rem">${esc(l.condition)}</div>` : ''}
+            <div class="mi-actions">
+              <button class="mi-del" onclick="removeItem(${l.id})">Remove</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function removeItem(id) {
+      if (!confirm('Remove this listing from the store?')) return;
+      const listings = JSON.parse(localStorage.getItem('sellerListings') || '[]').filter(l => l.id !== id);
+      localStorage.setItem('sellerListings', JSON.stringify(listings));
+      renderMyItems();
+      showToast('Listing removed');
+    }
+
+    // ── NAV AUTH ───────────────────────────────────────────────────────────────
+    function initNavAuth() {
+      const container = document.getElementById('nav-auth');
+      if (!container) return;
+      const user = JSON.parse(localStorage.getItem('authUser') || 'null');
+      if (!user) {
+        const btn = document.createElement('button');
+        btn.className = 'nav-login-btn';
+        btn.textContent = 'Login';
+        btn.onclick = () => window.location.href = 'login.html?redirect=profile.html';
+        container.appendChild(btn);
+        return;
+      }
+      const p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
+      const avatarSrc = p.avatar ||
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=e8a0b0&color=fff&size=28&bold=true`;
+      container.innerHTML = `
+        <button class="nav-user-btn" id="nav-user-btn" onclick="toggleAuthDropdown()">
+          <img class="nav-user-avatar" src="${avatarSrc}" alt="${esc(user.name)}" />
+          <span>${esc(user.name.split(' ')[0])}</span>
+          <span class="nav-user-caret">▾</span>
+        </button>
+        <div class="nav-dropdown" id="nav-dropdown">
+          <a href="dashboard.html">🛍 Dashboard</a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-logout" onclick="logOut()">Sign Out</button>
+        </div>`;
+      document.addEventListener('click', (e) => {
+        const dd = document.getElementById('nav-dropdown');
+        const nb = document.getElementById('nav-user-btn');
+        if (dd && !dd.contains(e.target) && nb && !nb.contains(e.target)) dd.classList.remove('open');
+      });
+    }
+    function toggleAuthDropdown() { document.getElementById('nav-dropdown')?.classList.toggle('open'); }
+    function logOut() {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('authUser');
+      window.location.href = 'index.html';
+    }
+
+    // ── INIT ───────────────────────────────────────────────────────────────────
+    renderHero();
+    loadPersonalInfo();
+    buildPhotoGrid();
+    renderMyItems();
+    initNavAuth();
+
+    // Pre-fill contact phone from profile
+    const _p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
+    if (_p.phone) document.getElementById('mi-contact-phone').value = _p.phone;
+    if (_p.city)  document.getElementById('mi-location').value      = _p.city;
+  </script>
+</body>
+</html>
