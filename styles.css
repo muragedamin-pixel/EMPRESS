@@ -163,7 +163,7 @@ body.dark nav { background: rgba(15,15,15,.92); }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 /* ── CATEGORIES ── */
-.categories { padding: 5rem 5%; text-align: center; background: url('https://i.pinimg.com/736x/4f/77/6e/4f776ec29891259d1a5de63f2722df43.jpg'); }
+.categories { padding: 5rem 5%; text-align: center; background: url('<img src="https://i.pinimg.com/736x/f4/92/80/f49280bda015bb151850d35c4ef7401c.jpg"'); }
 .categories h2 { font-size: 2.2rem; margin-bottom: 3rem; color: var(--text); }
 .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
 .cat-card {
