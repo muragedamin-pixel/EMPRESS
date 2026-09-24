@@ -11,40 +11,11 @@
 
   <!-- NAV -->
   <nav>
-<div class="nav-logo">
-  <img url ('https://i.pinimg.com/1200x/67/3b/5d/673b5d281e911eb926b40eb124fadcf4.jpg')>
-</div>
-    <style>
-CSS
-.nav-logo {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid var(--gold);
-  flex-shrink: 0;
-}
+    <div class="brand-block">
+      <img class="nav-brand-img" src="https://i.pinimg.com/1200x/67/3b/5d/673b5d281e911eb926b40eb124fadcf4.jpg" alt="PRE LOVED logo" />
+      <div class="nav-logo">PRE LOVED</div>
+    </div>
 
-.nav-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-
-  .navbar {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.nav-links {
-  display: flex;
-  gap: 25px;
-}
-}
-
-</style>   
-   <div class="nav-logo">PRE LOVED</div>
     <ul class="nav-links" id="nav-links">
       <li><a href="#categories">Shop</a></li>
       <li><a href="#collection">Collection</a></li>
@@ -64,18 +35,7 @@ CSS
   </nav>
   <!-- HERO -->
   <section class="hero"
-    style="background:url('https://i.pinimg.com/736x/cf/07/1b/cf071babf12254bef1713cbb3892558c.jpg')";
-     background-size: cover;
-     background-position: center;
-     background-repeat: no-repeat;
-     background-attachment: fixed;
-     min-height: 100vh;>
-  --white: #ffffff;
-  --blush: #f5e6e8;
-  --rose: #e8a0b0;
-  --rose-dark: #c4607a;
-  --tan: #d4a882;
-  --tan-light: #f0e0d0;">
+    style="background:url('https://i.pinimg.com/736x/cf/07/1b/cf071babf12254bef1713cbb3892558c.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; min-height: 100vh;">
     <div class="hero-content">
       <p class="hero-sub">New Season — 2026</p>
       <h1 class="hero-slideshow">
@@ -103,7 +63,8 @@ CSS
   <!-- MARQUEE -->
   <div class="marquee-bar">
     <div class="marquee-track">
-      <span>HANDBAGS &nbsp;✦&nbsp; SHOES &nbsp;✦&nbsp; CLOTHING &nbsp;✦&nbsp; NEW ARRIVALS &nbsp;✦&nbsp; FREE SHIPPING OVER Ksh 13,000 &nbsp;✦&nbsp; HANDBAGS &nbsp;✦&nbsp; SHOES &nbsp;✦&nbsp; CLOTHING &nbsp;✦&nbsp; NEW ARRIVALS &nbsp;✦&nbsp; FREE SHIPPING OVER Ksh 13,000 &nbsp;✦&nbsp;</span>
+      <span>HANDBAGS &nbsp;✦&nbsp; SHOES &nbsp;✦&nbsp; CLOTHING &nbsp;✦&nbsp; NEW ARRIVALS &nbsp;✦&nbsp; FREE SHIPPING OVER Ksh 13,000 &nbsp;✦&nbsp; HANDBAGS &nbsp;✦&nbsp; SHOES &nbsp;✦&nbsp; CLOTHING &nbsp;✦&nbsp; NEW ARRIVALS &nbsp;✦&nbsp; FREE SHIPPING OVER Ksh 13,000</span>
+      <span>HANDBAGS &nbsp;✦&nbsp; SHOES &nbsp;✦&nbsp; CLOTHING &nbsp;✦&nbsp; NEW ARRIVALS &nbsp;✦&nbsp; FREE SHIPPING OVER Ksh 13,000 &nbsp;✦&nbsp; HANDBAGS &nbsp;✦&nbsp; SHOES &nbsp;✦&nbsp; CLOTHING &nbsp;✦&nbsp; NEW ARRIVALS &nbsp;✦&nbsp; FREE SHIPPING OVER Ksh 13,000</span>
     </div>
   </div>
   <!-- CATEGORIES -->
@@ -281,7 +242,7 @@ CSS
     <div class="about-text">
       <p class="section-label">Our Story</p>
       <h2>Grab Your Masterpiece</h2>
-      <p>At PRE LOVED, we believe that great style should never be out of reach. Every handbag, pair of shoes, and clothing piece in our collection is personally handpicked and inspected to meet the highest standards — so what reaches you is nothing short of exceptional. Our pre-loved items are sourced from premium brands and treated with care, giving you luxury quality at prices that make sense. We are passionate about fashion that tells a story, and every piece we sell carries character, craftsmanship, and class. When you shop with us, you're not just buying an item — you're investing in something timeless.</p>
+      <p>At PRE LOVED, we believe that great style should never be out of reach. Every handbag, pair of shoes, and clothing piece in our collection is personally handpicked and inspected to meet the highest standards. Our curated edit brings together luxury-inspired designs, elevated essentials, and timeless pieces made to move with your lifestyle.</p>
       <ul class="pillars">
         <li>✦ Premium Quality Materials</li>
         <li>✦ Thoughtfully Curated Designs</li>
@@ -453,7 +414,7 @@ CSS
           <span class="star" data-v="4">★</span>
           <span class="star" data-v="5">★</span>
         </div>
-        <textarea id="review-text" placeholder="Leave a comment (optional)" style="width:100%;margin-top:1.25rem;padding:.75rem;border:1.5px solid var(--border);border-radius:10px;font-family:'Lato',sans-serif;font-size:.9rem;resize:none;height:90px;background:var(--bg);color:var(--text)"></textarea>
+        <textarea id="review-text" placeholder="Leave a comment (optional)" style="width:100%;margin-top:1.25rem;padding:.75rem;border:1.5px solid var(--border);border-radius:10px;font-family:'Lato',sans-serif;resize:vertical;min-height:90px;background:var(--bg);color:var(--text)"></textarea>
         <button class="btn-primary" style="width:100%;margin-top:1rem" onclick="submitRating()">Submit Review</button>
         <p id="rating-thanks" style="display:none;margin-top:1rem;color:var(--rose-dark);font-weight:700">🎉 Thank you for your review!</p>
       </div>
