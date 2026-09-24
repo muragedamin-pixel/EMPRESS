@@ -182,7 +182,7 @@ body.dark nav { background: rgba(15,15,15,.92); }
 .cat-link { font-size: .8rem; font-weight: 700; color: var(--rose-dark); letter-spacing: .12em; text-transform: uppercase; }
 
 /* ── COLLECTION ── */
-.collection { padding: 5rem 5%; background: var(--bg); }
+.collection { padding: 5rem 5%; background: #5A0010, #F4C2C2; }
 .collection-header { display: flex; align-items: center; justify-content: center; margin-bottom: 3rem; }
 .filter-tabs { display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center; }
 .tab {
