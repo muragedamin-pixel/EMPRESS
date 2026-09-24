@@ -1,3 +1,16 @@
+@@ -1,16 +1,3 @@
+// ── THEME TOGGLE ──
+const themeBtn = document.getElementById('theme-toggle');
+if (localStorage.getItem('theme') === 'dark') {
+  document.body.classList.add('dark');
+  themeBtn.textContent = '☀️';
+}
+themeBtn.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  const isDark = document.body.classList.contains('dark');
+  themeBtn.textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+});
 // ── LOAD SELLER LISTINGS FROM DASHBOARD ──────────────────────────────────────
 // Injects items added via dashboard.html into the products grid
 (function injectSellerListings() {
