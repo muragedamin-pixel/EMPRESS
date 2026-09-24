@@ -1,6 +1,6 @@
 /* ── TOKENS ── */
 :root {
-  --bg: #5A0010 + #F4C2C2;
+  --bg: #5A0010, #F4C2C2;
   --white: #ffffff;
   --blush: #f5e6e8;
   --rose: #e8a0b0;
