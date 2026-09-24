@@ -73,6 +73,25 @@ nav {
   border-bottom: 1px solid var(--border);
   gap: .75rem; flex-wrap: nowrap;
 }
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-brand-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
+
+.nav-logo {
+  font-size: 20px;
+  font-weight: 700;
+}
 body.dark nav { background: rgba(15,15,15,.92); }
 .nav-logo { font-family: 'Bebas Neue', serif; font-size: 2rem; letter-spacing: .25em; color: var(--rose-dark); white-space: nowrap; flex-shrink: 0; }
 .nav-links { display: flex; gap: 1.5rem; flex-wrap: nowrap; flex: 1; }
