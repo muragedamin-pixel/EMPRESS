@@ -171,7 +171,7 @@ body.dark nav { background: rgba(15,15,15,.92); }
   border: 1.5px solid var(--border); transition: transform .25s, box-shadow .25s;
   position: relative; cursor: pointer;
 }
-.cat-card:hover { transform: translateX(-6px); box-shadow: 0 12px 32px rgba(196,96,122,.12); }
+.cat-card:hover { transform: translateX(-6px); box-shadow: 0 12px 32px rgba(196,96,122,.12);background: #722F37, #FFFFF0; }
 .cat-card.featured { background: linear-gradient(135deg, #4A0000, #FFF5E1); border-color: var(--rose); }
 .cat-card.featured .cat-link { color: var(--rose-dark); }
 .cat-card.featured p { color: var(--text-muted); }
