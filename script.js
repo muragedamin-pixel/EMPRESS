@@ -1,429 +1,198 @@
-@@ -1,16 +1,3 @@
-// ── THEME TOGGLE ──
+// ── SAFE HELPERS ─────────────────────────────────────────────────────────────
+function readStorage(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value === null ? fallback : JSON.parse(value);
+  } catch (_) { return fallback; }
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+function safeImageUrl(value) {
+  const url = String(value || '').trim();
+  return /^(https?:|data:image\/|\/|\.\/|\.\.\/)/i.test(url) ? url : '';
+}
+
+// ── THEME TOGGLE ─────────────────────────────────────────────────────────────
 const themeBtn = document.getElementById('theme-toggle');
-if (localStorage.getItem('theme') === 'dark') {
-  document.body.classList.add('dark');
-  themeBtn.textContent = '☀️';
+function applyTheme(dark) {
+  document.body.classList.toggle('dark', dark);
+  if (!themeBtn) return;
+  themeBtn.textContent = dark ? '☀️' : '🌙';
+  themeBtn.setAttribute('aria-pressed', String(dark));
+  themeBtn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
 }
-themeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-  const isDark = document.body.classList.contains('dark');
-  themeBtn.textContent = isDark ? '☀️' : '🌙';
-  localStorage.setItem('theme', isDark ? 'dark' : 'light');
-});
-// ── LOAD SELLER LISTINGS FROM DASHBOARD ──────────────────────────────────────
-// Injects items added via dashboard.html into the products grid
-(function injectSellerListings() {
-  const listings = JSON.parse(localStorage.getItem('sellerListings') || '[]');
-  if (!listings.length) return;
-
-  const grid = document.getElementById('products');
-  const catIcons = { bags: '👜', shoes: '👠', clothing: '👗' };
-  const catLabels = { bags: 'Handbag', shoes: 'Shoes', clothing: 'Clothing' };
-
-  listings.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'product-card hidden'; // hidden until filter applied
-    card.dataset.cat = item.cat;
-    card.dataset.sellerItem = 'true';
-
-    card.innerHTML = `
-      <span class="badge">New</span>
-      <div class="product-img">
-        ${item.img
-          ? `<img src="${item.img}" alt="${escHtmlStore(item.name)}" />`
-          : `<span style="font-size:3rem">${catIcons[item.cat] || '🛍'}</span>`}
-        <div class="overlay"><button class="quick-add">Quick Add</button></div>
-      </div>
-      <span class="product-tag">${catLabels[item.cat] || item.cat}</span>
-      <h4>${escHtmlStore(item.name)}</h4>
-      <strong>${escHtmlStore(item.priceLabel)}</strong>
-    `;
-
-    grid.appendChild(card);
+if (themeBtn) {
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+  applyTheme(savedTheme ? savedTheme === 'dark' : Boolean(prefersDark));
+  themeBtn.addEventListener('click', () => {
+    const dark = !document.body.classList.contains('dark');
+    applyTheme(dark);
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
   });
-})();
-
-function escHtmlStore(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }
 
-// ── HERO SLIDESHOW ──
-const slides = document.querySelectorAll('.hero-slideshow .slide');
-let current = 0;
-setInterval(() => {
-  slides[current].classList.remove('active');
-  slides[current].classList.add('exit');
-  const exiting = current;
-  setTimeout(() => slides[exiting].classList.remove('exit'), 900);
-  current = (current + 1) % slides.length;
-  slides[current].classList.add('active');
+// ── SELLER LISTINGS ──────────────────────────────────────────────────────────
+const productGrid = document.getElementById('products');
+const categoryLabels = { bags: 'Handbag', shoes: 'Shoes', clothing: 'Clothing' };
+const categoryIcons = { bags: '👜', shoes: '👠', clothing: '👗' };
+const sellerListings = readStorage('sellerListings', []);
+if (productGrid && Array.isArray(sellerListings)) {
+  sellerListings.forEach(item => {
+    const card = document.createElement('div');
+    const cat = String(item?.cat || '');
+    const name = escapeHtml(item?.name || '');
+    const price = escapeHtml(item?.priceLabel || '');
+    const image = safeImageUrl(item?.img);
+    card.className = 'product-card hidden';
+    card.dataset.cat = cat;
+    card.dataset.sellerItem = 'true';
+    card.innerHTML = `<span class="badge">New</span><div class="product-img">${image ? `<img src="${image}" alt="${name}">` : `<span style="font-size:3rem">${categoryIcons[cat] || '🛍'}</span>`}<div class="overlay"><button class="quick-add">Quick Add</button></div></div><span class="product-tag">${escapeHtml(categoryLabels[cat] || cat)}</span><h4>${name}</h4><strong>${price}</strong>`;
+    productGrid.appendChild(card);
+  });
+}
+
+// ── HERO SLIDESHOW ───────────────────────────────────────────────────────────
+const slides = [...document.querySelectorAll('.hero-slideshow .slide')];
+let currentSlide = 0;
+if (slides.length > 1) setInterval(() => {
+  slides[currentSlide].classList.remove('active');
+  slides[currentSlide].classList.add('exit');
+  const previous = currentSlide;
+  setTimeout(() => slides[previous]?.classList.remove('exit'), 900);
+  currentSlide = (currentSlide + 1) % slides.length;
+  slides[currentSlide].classList.add('active');
 }, 5000);
 
-// Hamburger menu
+// ── NAVIGATION AND FILTERS ───────────────────────────────────────────────────
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
-hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-
-// Product filter tabs
-const tabs = document.querySelectorAll('.tab');
-const products = document.querySelectorAll('.product-card');
-const collectionSection = document.getElementById('collection');
-
-function applyFilter(filter) {
-  products.forEach(p => p.classList.toggle('hidden', p.dataset.cat !== filter));
-  tabs.forEach(t => t.classList.toggle('active', t.dataset.filter === filter));
-  collectionSection.scrollIntoView({ behavior: 'smooth' });
-  // wire quick-add after filter
-  document.querySelectorAll('.product-card:not(.hidden) .quick-add').forEach(btn => {
-    btn.onclick = (e) => {
-      e.stopPropagation();
-      const card = btn.closest('.product-card');
-      const name = card.querySelector('h4').textContent;
-      const price = card.querySelector('strong').textContent;
-      const img = card.querySelector('img')?.src || '';
-      addToCart(name, price, img);
-      btn.textContent = '✓ Added!';
-      setTimeout(() => btn.textContent = 'Quick Add', 1200);
-    };
-  });
-}
-
-// hide all on load
-products.forEach(p => p.classList.add('hidden'));
-
-// category card clicks
-document.querySelectorAll('.cat-card').forEach(card => {
-  card.addEventListener('click', () => {
-    const heading = card.querySelector('h3').textContent.trim().toLowerCase();
-    const map = { handbags: 'bags', shoes: 'shoes', clothing: 'clothing' };
-    applyFilter(map[heading] || heading);
-  });
-});
-
-// also wire the tab buttons
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => applyFilter(tab.dataset.filter));
-});
-
-// Click bag/shoe card → product page (hardcoded items) or add to cart (seller items)
-document.querySelectorAll('.product-card[data-cat="bags"], .product-card[data-cat="shoes"]').forEach(card => {
-  card.style.cursor = 'pointer';
-  card.addEventListener('click', (e) => {
-    if (e.target.classList.contains('quick-add')) return;
-    // Seller-added items go straight to cart via quick-add; clicking card also adds
-    if (card.dataset.sellerItem === 'true') {
-      const name  = card.querySelector('h4')?.textContent || '';
-      const price = card.querySelector('strong')?.textContent || '';
-      const img   = card.querySelector('img')?.src || '';
-      addToCart(name, price, img);
-      return;
-    }
-    const img   = card.querySelector('img')?.src || '';
-    const name  = card.querySelector('h4')?.textContent || '';
-    const price = card.querySelector('strong')?.textContent || '';
-    window.location.href = `product.html?img=${encodeURIComponent(img)}&name=${encodeURIComponent(name)}&price=${encodeURIComponent(price)}`;
-  });
-});
-
-// ── CART ──
-const cart = [];
-
-function openCart() {
-  document.getElementById('cart-drawer').classList.add('open');
-  document.getElementById('cart-overlay').classList.add('open');
-}
-function closeCart() {
-  document.getElementById('cart-drawer').classList.remove('open');
-  document.getElementById('cart-overlay').classList.remove('open');
-}
-document.getElementById('cart-icon').addEventListener('click', openCart);
-document.getElementById('cart-close').addEventListener('click', closeCart);
-document.getElementById('cart-overlay').addEventListener('click', closeCart);
-
-function renderCart() {
-  const itemsEl = document.getElementById('cart-items');
-  const countEl = document.getElementById('cart-count');
-  const totalEl = document.getElementById('cart-total');
-  const footerEl = document.getElementById('cart-footer');
-
-  countEl.textContent = cart.length;
-  if (cart.length === 0) {
-    itemsEl.innerHTML = '<p class="cart-empty">Your cart is empty.</p>';
-    footerEl.style.display = 'none';
-    return;
-  }
-  footerEl.style.display = 'block';
-  itemsEl.innerHTML = cart.map((item, i) => `
-    <div class="cart-item">
-      <img src="${item.img}" alt="${item.name}" />
-      <div class="cart-item-info">
-        <h4>${item.name}</h4>
-        <span>${item.price}</span>
-      </div>
-      <button class="cart-item-remove" onclick="removeFromCart(${i})">✕</button>
-    </div>
-  `).join('');
-
-  // calc total (strip non-numeric except comma/dot)
-  const total = cart.reduce((sum, item) => {
-    const num = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
-    return sum + num;
-  }, 0);
-  totalEl.textContent = 'Ksh ' + total.toLocaleString();
-}
-
-function removeFromCart(i) {
-  cart.splice(i, 1);
-  renderCart();
-}
+hamburger?.addEventListener('click', () => navLinks?.classList.toggle('open'));
+const tabs = [...document.querySelectorAll('.tab')];
+const products = [...document.querySelectorAll('.product-card')];
+const collection = document.getElementById('collection');
 
 function addToCart(name, price, img) {
-  cart.push({ name, price, img });
+  cart.push({ name: String(name || ''), price: String(price || ''), img: safeImageUrl(img) });
   renderCart();
   openCart();
 }
-
-function openPayModal() {
-  if (!cart.length) return;
-  document.getElementById('pay-modal-total').textContent = document.getElementById('cart-total').textContent;
-  document.getElementById('pay-modal').classList.add('open');
-}
-function closePayModal() {
-  document.getElementById('pay-modal').classList.remove('open');
-  ['mpesa','visa','paypal','equity'].forEach(m => {
-    const el = document.getElementById('pay-' + m);
-    if (el) el.classList.remove('open');
+function applyFilter(filter) {
+  products.forEach(card => card.classList.toggle('hidden', card.dataset.cat !== filter));
+  tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.filter === filter));
+  collection?.scrollIntoView({ behavior: 'smooth' });
+  document.querySelectorAll('.product-card:not(.hidden) .quick-add').forEach(button => {
+    button.onclick = event => {
+      event.stopPropagation();
+      const card = button.closest('.product-card');
+      addToCart(card?.querySelector('h4')?.textContent, card?.querySelector('strong')?.textContent, card?.querySelector('img')?.src);
+      button.textContent = '✓ Added!';
+      setTimeout(() => { button.textContent = 'Quick Add'; }, 1200);
+    };
   });
 }
+products.forEach(card => card.classList.add('hidden'));
+document.querySelectorAll('.cat-card').forEach(card => card.addEventListener('click', () => {
+  const heading = card.querySelector('h3')?.textContent.trim().toLowerCase();
+  applyFilter({ handbags: 'bags', shoes: 'shoes', clothing: 'clothing' }[heading] || heading);
+}));
+tabs.forEach(tab => tab.addEventListener('click', () => applyFilter(tab.dataset.filter)));
+products.forEach(card => card.addEventListener('click', event => {
+  if (event.target.closest('.quick-add')) return;
+  const name = card.querySelector('h4')?.textContent || '';
+  const price = card.querySelector('strong')?.textContent || '';
+  const img = card.querySelector('img')?.src || '';
+  if (card.dataset.sellerItem === 'true') addToCart(name, price, img);
+  else if (card.dataset.cat === 'bags' || card.dataset.cat === 'shoes') window.location.href = `product.html?img=${encodeURIComponent(img)}&name=${encodeURIComponent(name)}&price=${encodeURIComponent(price)}`;
+}));
 
-function openShipping(e) {
-  e.preventDefault();
-  document.getElementById('shipping-modal').classList.add('open');
+// ── CART ─────────────────────────────────────────────────────────────────────
+const cart = [];
+function openCart() { document.getElementById('cart-drawer')?.classList.add('open'); document.getElementById('cart-overlay')?.classList.add('open'); }
+function closeCart() { document.getElementById('cart-drawer')?.classList.remove('open'); document.getElementById('cart-overlay')?.classList.remove('open'); }
+document.getElementById('cart-icon')?.addEventListener('click', openCart);
+document.getElementById('cart-close')?.addEventListener('click', closeCart);
+document.getElementById('cart-overlay')?.addEventListener('click', closeCart);
+function renderCart() {
+  const items = document.getElementById('cart-items');
+  const count = document.getElementById('cart-count');
+  const total = document.getElementById('cart-total');
+  const footer = document.getElementById('cart-footer');
+  if (!items || !count || !total || !footer) return;
+  count.textContent = cart.length;
+  footer.style.display = cart.length ? 'block' : 'none';
+  items.innerHTML = cart.length ? cart.map((item, index) => `<div class="cart-item"><img src="${item.img}" alt="${escapeHtml(item.name)}"><div class="cart-item-info"><h4>${escapeHtml(item.name)}</h4><span>${escapeHtml(item.price)}</span></div><button class="cart-item-remove" onclick="removeFromCart(${index})">✕</button></div>`).join('') : '<p class="cart-empty">Your cart is empty.</p>';
+  total.textContent = 'Ksh ' + cart.reduce((sum, item) => sum + (parseInt(item.price.replace(/[^0-9]/g, ''), 10) || 0), 0).toLocaleString();
 }
+function removeFromCart(index) { cart.splice(index, 1); renderCart(); }
+function openPayModal() { if (!cart.length) return; const modal = document.getElementById('pay-modal'); if (modal) { document.getElementById('pay-modal-total').textContent = document.getElementById('cart-total')?.textContent || ''; modal.classList.add('open'); } }
+function closePayModal() { document.getElementById('pay-modal')?.classList.remove('open'); ['mpesa','visa','paypal','equity'].forEach(method => document.getElementById('pay-' + method)?.classList.remove('open')); }
+function openShipping(event) { event.preventDefault(); document.getElementById('shipping-modal')?.classList.add('open'); }
+function togglePayInput(method) { ['mpesa','visa','paypal','equity'].forEach(item => document.getElementById('pay-' + item)?.classList.toggle('open', item === method)); }
 
-function togglePayInput(method) {
-  ['mpesa','visa','paypal','equity'].forEach(m => {
-    const el = document.getElementById('pay-' + m);
-    if (el) el.classList.toggle('open', m === method && !el.classList.contains('open'));
-  });
-}
-
-// ── RAILWAY SERVER URL ────────────────────────────────────────────────────────
-// Replace this with your actual Railway deployment URL after deploying
+// ── PAYMENT AND RATING ───────────────────────────────────────────────────────
 const SERVER_URL = 'https://your-railway-url.up.railway.app';
-
-// ── M-PESA STK PUSH ───────────────────────────────────────────────────────────
 async function initiateMpesaPayment() {
-  const phoneInput = document.querySelector('#pay-mpesa input[type="tel"]');
-  const phone = phoneInput ? phoneInput.value.trim() : '';
-
-  if (!phone) {
-    alert('Please enter your M-Pesa phone number.');
-    return;
-  }
-
-  const totalText = document.getElementById('cart-total')?.textContent || '0';
-  const amount = totalText.replace(/[^0-9]/g, '');
-  const itemName = cart.length === 1 ? cart[0].name : 'PRE LOVED Order';
-
-  // Show loading state
-  const confirmBtn = document.querySelector('#pay-mpesa .confirm-pay');
-  const originalText = confirmBtn.textContent;
-  confirmBtn.textContent = 'Sending…';
-  confirmBtn.disabled = true;
-
+  const phone = document.querySelector('#pay-mpesa input[type="tel"]')?.value.trim();
+  const button = document.querySelector('#pay-mpesa .confirm-pay');
+  if (!phone || !button) { alert('Please enter your M-Pesa phone number.'); return; }
+  const original = button.textContent;
+  button.disabled = true; button.textContent = 'Sending…';
   try {
-    const res = await fetch(`${SERVER_URL}/stk-push`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, amount, itemName }),
-    });
-
-    const data = await res.json();
-
-    if (!data.success) {
-      alert(`Payment failed: ${data.message}`);
-      confirmBtn.textContent = originalText;
-      confirmBtn.disabled = false;
-      return;
-    }
-
-    // Payment prompt sent — show waiting state
-    confirmBtn.textContent = 'Check your phone…';
-
-    // Poll for payment status
-    pollPaymentStatus(data.checkoutRequestId, confirmBtn, originalText);
-
-  } catch (err) {
-    console.error('[M-Pesa Error]', err);
-    alert('Could not reach payment server. Please try again.');
-    confirmBtn.textContent = originalText;
-    confirmBtn.disabled = false;
-  }
+    const response = await fetch(`${SERVER_URL}/stk-push`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, amount: (document.getElementById('cart-total')?.textContent || '').replace(/[^0-9]/g, ''), itemName: cart.length === 1 ? cart[0].name : 'PRE LOVED Order' }) });
+    const data = await response.json();
+    if (!data.success) throw new Error(data.message || 'Payment failed');
+    button.textContent = 'Check your phone…';
+    pollPaymentStatus(data.checkoutRequestId, button, original);
+  } catch (error) { alert(error.message || 'Could not reach payment server. Please try again.'); button.disabled = false; button.textContent = original; }
 }
-
-/**
- * Poll the server every 3 seconds until payment is confirmed or failed.
- * Timeout after 90 seconds.
- */
-function pollPaymentStatus(checkoutRequestId, btn, originalText) {
+function pollPaymentStatus(requestId, button, original) {
   let attempts = 0;
-  const maxAttempts = 30; // 30 × 3s = 90s
-
-  const interval = setInterval(async () => {
-    attempts++;
-
+  const timer = setInterval(async () => {
     try {
-      const res  = await fetch(`${SERVER_URL}/status/${checkoutRequestId}`);
-      const data = await res.json();
-
-      if (data.status === 'success') {
-        clearInterval(interval);
-        closePayModal();
-        setTimeout(() => document.getElementById('rating-modal').classList.add('open'), 400);
-        return;
+      const data = await (await fetch(`${SERVER_URL}/status/${encodeURIComponent(requestId)}`)).json();
+      if (data.status === 'success' || data.status === 'failed' || ++attempts >= 30) {
+        clearInterval(timer); button.disabled = false; button.textContent = original;
+        if (data.status === 'success') { closePayModal(); setTimeout(() => document.getElementById('rating-modal')?.classList.add('open'), 400); }
+        else if (data.status === 'failed') alert(`Payment failed: ${data.message || 'Please try again.'}`);
+        else alert('Payment timed out. If you completed the payment, we will confirm shortly.');
       }
-
-      if (data.status === 'failed') {
-        clearInterval(interval);
-        alert(`Payment failed: ${data.message || 'Please try again.'}`);
-        btn.textContent = originalText;
-        btn.disabled = false;
-        return;
-      }
-
-      // Still pending
-      if (attempts >= maxAttempts) {
-        clearInterval(interval);
-        alert('Payment timed out. If you completed the payment, we will confirm shortly.');
-        btn.textContent = originalText;
-        btn.disabled = false;
-      }
-
-    } catch (err) {
-      console.error('[Poll Error]', err);
-    }
+    } catch (_) { if (++attempts >= 30) { clearInterval(timer); button.disabled = false; button.textContent = original; } }
   }, 3000);
 }
-
-function confirmPay(method) {
-  if (method === 'M-Pesa') {
-    initiateMpesaPayment();
-    return;
-  }
-  // For Visa / PayPal / Equity — close modal and show rating
-  // (wire up real payment gateways here as needed)
-  closePayModal();
-  setTimeout(() => {
-    document.getElementById('rating-modal').classList.add('open');
-  }, 400);
-}
-
-// Star rating
+function confirmPay(method) { if (method === 'M-Pesa') return initiateMpesaPayment(); closePayModal(); setTimeout(() => document.getElementById('rating-modal')?.classList.add('open'), 400); }
 let selectedRating = 0;
 document.querySelectorAll('.star').forEach(star => {
-  star.addEventListener('mouseover', () => {
-    document.querySelectorAll('.star').forEach(s => s.classList.toggle('on', s.dataset.v <= star.dataset.v));
-  });
-  star.addEventListener('mouseleave', () => {
-    document.querySelectorAll('.star').forEach(s => s.classList.toggle('on', s.dataset.v <= selectedRating));
-  });
-  star.addEventListener('click', () => {
-    selectedRating = star.dataset.v;
-    document.querySelectorAll('.star').forEach(s => s.classList.toggle('on', s.dataset.v <= selectedRating));
-  });
+  star.addEventListener('mouseover', () => document.querySelectorAll('.star').forEach(item => item.classList.toggle('on', Number(item.dataset.v) <= Number(star.dataset.v))));
+  star.addEventListener('mouseleave', () => document.querySelectorAll('.star').forEach(item => item.classList.toggle('on', Number(item.dataset.v) <= selectedRating)));
+  star.addEventListener('click', () => { selectedRating = Number(star.dataset.v); star.dispatchEvent(new MouseEvent('mouseleave')); });
 });
+function submitRating() { if (!selectedRating) return alert('Please select a star rating.'); document.getElementById('rating-thanks')?.style.setProperty('display', 'block'); document.querySelector('#rating-modal .btn-primary')?.style.setProperty('display', 'none'); setTimeout(() => document.getElementById('rating-modal')?.classList.remove('open'), 2000); }
 
-function submitRating() {
-  if (!selectedRating) { alert('Please select a star rating.'); return; }
-  document.getElementById('rating-thanks').style.display = 'block';
-  document.querySelector('#rating-modal .btn-primary').style.display = 'none';
-  setTimeout(() => document.getElementById('rating-modal').classList.remove('open'), 2000);
-}
-
-// Newsletter form
-document.getElementById('newsletter-form').addEventListener('submit', e => {
-  e.preventDefault();
-  e.target.style.display = 'none';
-  const msg = document.getElementById('newsletter-msg');
-  msg.textContent = '🎉 You\'re on the list! Welcome to the PRE LOVED family.';
-  msg.style.fontSize = '1.1rem';
-});
+document.getElementById('newsletter-form')?.addEventListener('submit', event => { event.preventDefault(); event.target.style.display = 'none'; const message = document.getElementById('newsletter-msg'); if (message) { message.textContent = "🎉 You're on the list! Welcome to the PRE LOVED family."; message.style.fontSize = '1.1rem'; } });
 
 // ── NAV AUTH ─────────────────────────────────────────────────────────────────
 (function initNavAuth() {
   const container = document.getElementById('nav-auth');
   if (!container) return;
-
-  const user = JSON.parse(localStorage.getItem('authUser') || 'null');
-
-  if (!user) {
-    // Logged out — show a profile icon button linking to login
-    container.innerHTML = `
-      <a class="nav-profile-btn" href="login.html?redirect=profile.html" title="Sign in to your account">
-        👤
-      </a>`;
-    return;
-  }
-
-  // Logged in — show avatar + first name + dropdown
-  const p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
-  const avatarSrc = p.avatar ||
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=e8a0b0&color=fff&size=36&bold=true`;
-  const firstName = user.name.split(' ')[0];
-
-  container.innerHTML = `
-    <button class="nav-avatar-btn" id="nav-user-btn" onclick="toggleAuthDropdown()" title="${user.name}">
-      <img class="nav-avatar-img" src="${avatarSrc}" alt="${firstName}" />
-      <span class="nav-avatar-name">${firstName}</span>
-      <span class="nav-avatar-caret">▾</span>
-    </button>
-    <div class="nav-dropdown" id="nav-dropdown">
-      <a href="profile.html">👤 My Profile</a>
-      <a href="dashboard.html">🛍 My Dashboard</a>
-      <div class="dropdown-divider"></div>
-      <button class="dropdown-logout" onclick="logOut()">Sign Out</button>
-    </div>
-  `;
-
-  // Close dropdown on outside click
-  document.addEventListener('click', (e) => {
-    const dropdown = document.getElementById('nav-dropdown');
-    const btn = document.getElementById('nav-user-btn');
-    if (dropdown && !dropdown.contains(e.target) && btn && !btn.contains(e.target)) {
-      dropdown.classList.remove('open');
-    }
-  });
+  const user = readStorage('authUser', null);
+  if (!user) { container.innerHTML = '<a class="nav-profile-btn" href="login.html?redirect=profile.html" title="Sign in to your account">👤</a>'; return; }
+  const profile = readStorage('sellerProfile', {});
+  const name = String(user.name || 'User');
+  const firstName = name.split(' ')[0];
+  const avatar = safeImageUrl(profile?.avatar) || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=e8a0b0&color=fff&size=36&bold=true`;
+  container.innerHTML = `<button class="nav-avatar-btn" id="nav-user-btn" onclick="toggleAuthDropdown()" title="${escapeHtml(name)}"><img class="nav-avatar-img" src="${avatar}" alt="${escapeHtml(firstName)}"><span class="nav-avatar-name">${escapeHtml(firstName)}</span><span class="nav-avatar-caret">▾</span></button><div class="nav-dropdown" id="nav-dropdown"><a href="profile.html">👤 My Profile</a><a href="dashboard.html">🛍 My Dashboard</a><div class="dropdown-divider"></div><button class="dropdown-logout" onclick="logOut()">Sign Out</button></div>`;
+  document.addEventListener('click', event => { const dropdown = document.getElementById('nav-dropdown'); const button = document.getElementById('nav-user-btn'); if (dropdown && button && !dropdown.contains(event.target) && !button.contains(event.target)) dropdown.classList.remove('open'); });
 })();
+function toggleAuthDropdown() { document.getElementById('nav-dropdown')?.classList.toggle('open'); }
+function logOut() { localStorage.removeItem('authToken'); localStorage.removeItem('authUser'); window.location.reload(); }
 
-function toggleAuthDropdown() {
-  document.getElementById('nav-dropdown')?.classList.toggle('open');
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; } }), { threshold: 0.1 });
+  document.querySelectorAll('.cat-card, .product-card, .stat, .tcard').forEach(element => { element.style.opacity = '0'; element.style.transform = 'translateY(20px)'; element.style.transition = 'opacity .5s ease, transform .5s ease'; observer.observe(element); });
 }
-
-function logOut() {
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('authUser');
-  window.location.reload();
-}
-
-// Scroll reveal
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-    }
-  });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.cat-card, .product-card, .stat, .tcard').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = 'opacity .5s ease, transform .5s ease';
-  observer.observe(el);
-});
