@@ -1,6 +1,6 @@
 /* ── TOKENS ── */
 :root {
-  --bg: url('https://i.pinimg.com/1200x/fb/e5/52/fbe552f0bb357706efaeda11dc25fef1.jpg');
+  --bg: #5A0010 + #F4C2C2;
   --white: #ffffff;
   --blush: #f5e6e8;
   --rose: #e8a0b0;
@@ -22,7 +22,7 @@ body {
 }
 
 body.dark {
-  --bg: url('https://i.pinimg.com/1200x/fb/e5/52/fbe552f0bb357706efaeda11dc25fef1.jpg');
+  --bg: #5A0010 + #F4C2C2;
 
   --white: #1a1a1a;
   --blush: #1a1015;
