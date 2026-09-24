@@ -15,7 +15,7 @@
 }
 
 body.dark {
-  --bg: #0f0f0f;
+  --bg: url ('https://i.pinimg.com/736x/cf/07/1b/cf071babf12254bef1713cbb3892558c.jpg);
   --white: #1a1a1a;
   --blush: #1a1015;
   --rose: #a0506a;
