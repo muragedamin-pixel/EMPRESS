@@ -3,416 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EMPRESS — Seller Dashboard</title>
+  <title>PRE LOVED — Seller Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
-    /* ── DASHBOARD LAYOUT ── */
-    .dash-wrap {
-      max-width: 960px;
-      margin: 6rem auto 5rem;
-      padding: 0 5%;
-    }
-
-    .dash-hero {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 3rem;
-    }
-    .dash-hero h1 {
-      font-size: 2.4rem;
-      color: var(--text);
-    }
-    .dash-hero p {
-      color: var(--text-muted);
-      font-size: .9rem;
-      margin-top: .25rem;
-    }
-
-    /* ── PROFILE CARD ── */
-    .profile-card {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1.75rem;
-      flex-wrap: wrap;
-      margin-bottom: 3rem;
-    }
-    .avatar-wrap {
-      position: relative;
-      width: 88px;
-      height: 88px;
-      flex-shrink: 0;
-    }
-    .avatar-wrap img {
-      width: 88px;
-      height: 88px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--rose);
-    }
-    .avatar-edit {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      background: var(--rose-dark);
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      font-size: .85rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .dash-wrap { max-width: 960px; margin: 6rem auto 5rem; padding: 0 5%; }
+    .dash-hero { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
+    .dash-hero h1 { font-size: 2.4rem; color: var(--text); }
+    .dash-hero p { color: var(--text-muted); font-size: .9rem; margin-top: .25rem; }
+    .profile-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; padding: 2rem; display: flex; align-items: center; gap: 1.75rem; flex-wrap: wrap; margin-bottom: 3rem; }
+    .avatar-wrap { position: relative; width: 88px; height: 88px; flex-shrink: 0; }
+    .avatar-wrap img { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid var(--rose); }
+    .avatar-edit { position: absolute; bottom: 0; right: 0; background: var(--rose-dark); color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: .85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     #avatar-input { display: none; }
-
-    .profile-fields {
-      display: flex;
-      flex-direction: column;
-      gap: .65rem;
-      flex: 1;
-      min-width: 220px;
-    }
+    .profile-fields { display: flex; flex-direction: column; gap: .65rem; flex: 1; min-width: 220px; }
     .profile-fields input {
-      padding: .65rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Lato', sans-serif;
-      font-size: .95rem;
-      outline: none;
-      transition: border-color .2s;
+      padding: .65rem 1rem; border: 1.5px solid var(--border); border-radius: 10px; background: var(--bg); color: var(--text);
+      font-family: 'Lato', sans-serif; font-size: .95rem; outline: none; transition: border-color .2s;
     }
     .profile-fields input:focus { border-color: var(--rose-dark); }
-    .profile-save {
-      align-self: flex-start;
-      margin-top: .25rem;
-    }
-    .profile-saved-msg {
-      font-size: .8rem;
-      color: var(--rose-dark);
-      font-weight: 700;
-      display: none;
-    }
-
-    /* ── SECTION TITLE ── */
-    .section-title {
-      font-size: 1.6rem;
-      color: var(--text);
-      margin-bottom: 1.5rem;
-    }
-    .section-title span {
-      font-size: .75rem;
-      font-weight: 700;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--tan);
-      display: block;
-      margin-bottom: .3rem;
-    }
-
-    /* ── ADD ITEM FORM ── */
-    .add-item-card {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 2rem;
-      margin-bottom: 3rem;
-    }
-
-    .img-upload-zone {
-      border: 2px dashed var(--border);
-      border-radius: 14px;
-      height: 200px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: .75rem;
-      cursor: pointer;
-      transition: border-color .2s, background .2s;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-    }
+    .profile-save { align-self: flex-start; margin-top: .25rem; }
+    .profile-saved-msg { font-size: .8rem; color: var(--rose-dark); font-weight: 700; display: none; }
+    .section-title { font-size: 1.6rem; color: var(--text); margin-bottom: 1.5rem; }
+    .section-title span { font-size: .75rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--tan); display: block; margin-bottom: .3rem; }
+    .add-item-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; padding: 2rem; margin-bottom: 3rem; }
+    .img-upload-zone { border: 2px dashed var(--border); border-radius: 14px; height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .75rem; cursor: pointer; transition: border-color .2s, background .2s; position: relative; overflow: hidden; margin-bottom: 1.5rem; }
     .img-upload-zone:hover { border-color: var(--rose-dark); background: var(--blush); }
     .img-upload-zone.has-image { border-style: solid; border-color: var(--rose); }
-    .img-upload-zone img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 12px;
-    }
-    .img-upload-zone .upload-label {
-      font-size: .85rem;
-      color: var(--text-muted);
-      text-align: center;
-      line-height: 1.7;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .img-upload-zone .upload-icon {
-      font-size: 2.5rem;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .img-upload-zone .img-overlay-btn {
-      position: absolute;
-      bottom: .75rem;
-      right: .75rem;
-      background: rgba(0,0,0,.55);
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      padding: .4rem .9rem;
-      font-size: .75rem;
-      cursor: pointer;
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      z-index: 2;
-      display: none;
-    }
+    .img-upload-zone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+    .img-upload-zone .upload-label { font-size: .85rem; color: var(--text-muted); text-align: center; line-height: 1.7; pointer-events: none; z-index: 1; }
+    .img-upload-zone .upload-icon { font-size: 2.5rem; pointer-events: none; z-index: 1; }
+    .img-upload-zone .img-overlay-btn { position: absolute; bottom: .75rem; right: .75rem; background: rgba(0,0,0,.55); color: #fff; border: none; border-radius: 20px; padding: .4rem .9rem; font-size: .75rem; cursor: pointer; font-family: 'Lato', sans-serif; font-weight: 700; z-index: 2; display: none; }
     .img-upload-zone.has-image .img-overlay-btn { display: block; }
-    .img-upload-zone.has-image .upload-icon,
-    .img-upload-zone.has-image .upload-label { display: none; }
+    .img-upload-zone.has-image .upload-icon, .img-upload-zone.has-image .upload-label { display: none; }
     #item-img-input { display: none; }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: .4rem;
-    }
-    .form-group label {
-      font-size: .72rem;
-      font-weight: 700;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      padding: .7rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Lato', sans-serif;
-      font-size: .95rem;
-      outline: none;
-      transition: border-color .2s;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus { border-color: var(--rose-dark); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: .4rem; }
+    .form-group label { font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--text-muted); }
+    .form-group input, .form-group select, .form-group textarea { padding: .7rem 1rem; border: 1.5px solid var(--border); border-radius: 10px; background: var(--bg); color: var(--text); font-family: 'Lato', sans-serif; font-size: .95rem; outline: none; transition: border-color .2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--rose-dark); }
     .form-group textarea { resize: vertical; min-height: 80px; }
     .form-group select { cursor: pointer; }
-
-    .form-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .form-error {
-      font-size: .82rem;
-      color: #e05050;
-      font-weight: 600;
-      display: none;
-    }
-
-    /* ── LISTINGS GRID ── */
-    .listings-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.5rem;
-    }
-    .listing-card {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      transition: transform .25s, box-shadow .25s;
-    }
+    .form-actions { display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .form-error { font-size: .82rem; color: #e05050; font-weight: 600; display: none; }
+    .listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+    .listing-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; position: relative; transition: transform .25s, box-shadow .25s; }
     .listing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(196,96,122,.12); }
-    .listing-img {
-      height: 220px;
-      overflow: hidden;
-      background: var(--tan-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .listing-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .listing-img .no-img {
-      font-size: 3rem;
-      color: var(--text-muted);
-    }
+    .listing-img { height: 220px; overflow: hidden; background: var(--tan-light); display: flex; align-items: center; justify-content: center; }
+    .listing-img img { width: 100%; height: 100%; object-fit: cover; }
+    .listing-img .no-img { font-size: 3rem; color: var(--text-muted); }
     .listing-body { padding: 1rem 1.2rem 1.2rem; }
-    .listing-cat {
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--tan);
-      margin-bottom: .3rem;
-    }
-    .listing-name {
-      font-size: 1rem;
-      color: var(--text);
-      margin-bottom: .35rem;
-      font-family: 'Playfair Display', serif;
-    }
-    .listing-price {
-      font-size: 1.1rem;
-      color: var(--rose-dark);
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-    }
-    .listing-status {
-      display: inline-flex;
-      align-items: center;
-      gap: .35rem;
-      font-size: .72rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-top: .6rem;
-      padding: .3rem .75rem;
-      border-radius: 20px;
-    }
-    .status-live {
-      background: #d4f5de;
-      color: #1a7a3a;
-    }
-    body.dark .status-live {
-      background: #0d2a15;
-      color: #5acc7a;
-    }
-    .listing-actions {
-      display: flex;
-      gap: .5rem;
-      margin-top: .75rem;
-    }
-    .btn-delete {
-      background: none;
-      border: 1.5px solid #e05050;
-      color: #e05050;
-      padding: .4rem .9rem;
-      border-radius: 20px;
-      font-size: .75rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Lato', sans-serif;
-      transition: all .2s;
-    }
+    .listing-cat { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--tan); margin-bottom: .3rem; }
+    .listing-name { font-size: 1rem; color: var(--text); margin-bottom: .35rem; font-family: 'Playfair Display', serif; }
+    .listing-price { font-size: 1.1rem; color: var(--rose-dark); font-family: 'Playfair Display', serif; font-weight: 700; }
+    .listing-status { display: inline-flex; align-items: center; gap: .35rem; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-top: .6rem; padding: .3rem .75rem; border-radius: 20px; }
+    .status-live { background: #d4f5de; color: #1a7a3a; }
+    body.dark .status-live { background: #0d2a15; color: #5acc7a; }
+    .listing-actions { display: flex; gap: .5rem; margin-top: .75rem; }
+    .btn-delete { background: none; border: 1.5px solid #e05050; color: #e05050; padding: .4rem .9rem; border-radius: 20px; font-size: .75rem; font-weight: 700; cursor: pointer; font-family: 'Lato', sans-serif; transition: all .2s; }
     .btn-delete:hover { background: #e05050; color: #fff; }
-    .btn-edit-listing {
-      background: none;
-      border: 1.5px solid var(--border);
-      color: var(--text-muted);
-      padding: .4rem .9rem;
-      border-radius: 20px;
-      font-size: .75rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Lato', sans-serif;
-      transition: all .2s;
-    }
+    .btn-edit-listing { background: none; border: 1.5px solid var(--border); color: var(--text-muted); padding: .4rem .9rem; border-radius: 20px; font-size: .75rem; font-weight: 700; cursor: pointer; font-family: 'Lato', sans-serif; transition: all .2s; }
     .btn-edit-listing:hover { border-color: var(--rose-dark); color: var(--rose-dark); }
-
-    .empty-listings {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 4rem 2rem;
-      color: var(--text-muted);
-    }
+    .empty-listings { grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; color: var(--text-muted); }
     .empty-listings .empty-icon { font-size: 3.5rem; margin-bottom: 1rem; }
     .empty-listings p { font-size: .95rem; line-height: 1.7; }
-
-    /* ── TOAST ── */
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #1a1a1a;
-      color: #fff;
-      padding: .85rem 2rem;
-      border-radius: 30px;
-      font-size: .88rem;
-      font-weight: 600;
-      z-index: 999;
-      transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .35s;
-      opacity: 0;
-      pointer-events: none;
-      white-space: nowrap;
-    }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px); background: #1a1a1a; color: #fff; padding: .85rem 2rem; border-radius: 30px; font-size: .88rem; font-weight: 600; z-index: 999; transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .35s; opacity: 0; pointer-events: none; white-space: nowrap; }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-    /* ── STATS BAR ── */
-    .dash-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 1rem;
-      margin-bottom: 3rem;
-    }
-    .dash-stat {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      padding: 1.25rem;
-      text-align: center;
-    }
-    .dash-stat h3 {
-      font-size: 1.9rem;
-      color: var(--rose-dark);
-      margin-bottom: .2rem;
-    }
-    .dash-stat p {
-      font-size: .72rem;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 600px) {
-      .form-row { grid-template-columns: 1fr; }
-      .profile-card { flex-direction: column; }
-    }
+    .dash-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 3rem; }
+    .dash-stat { background: var(--card); border: 1.5px solid var(--border); border-radius: 16px; padding: 1.25rem; text-align: center; }
+    .dash-stat h3 { font-size: 1.9rem; color: var(--rose-dark); margin-bottom: .2rem; }
+    .dash-stat p { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } .profile-card { flex-direction: column; } }
   </style>
 </head>
 <body>
-
-  <!-- NAV -->
   <nav>
-    <div class="nav-logo">EMPRESS</div>
+    <div class="nav-logo">PRE LOVED</div>
     <ul class="nav-links" id="nav-links">
       <li><a href="index.html#categories">Shop</a></li>
       <li><a href="index.html#collection">Collection</a></li>
@@ -421,14 +87,12 @@
     <div class="nav-actions">
       <a href="index.html" class="btn-primary" style="font-size:.8rem;padding:.65rem 1.5rem">← Back to Store</a>
       <div class="nav-auth" id="nav-auth"></div>
-      <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode">🌙</button>
+      <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle dark/light mode" aria-pressed="false">🌙</button>
     </div>
     <div class="hamburger" id="hamburger">&#9776;</div>
   </nav>
 
   <div class="dash-wrap">
-
-    <!-- HEADER -->
     <div class="dash-hero">
       <div>
         <h1>Seller Dashboard</h1>
@@ -436,7 +100,6 @@
       </div>
     </div>
 
-    <!-- PROFILE -->
     <div class="profile-card">
       <div class="avatar-wrap">
         <img id="avatar-img" src="https://ui-avatars.com/api/?name=Seller&background=e8a0b0&color=fff&size=88&bold=true" alt="Avatar" />
@@ -454,81 +117,33 @@
       </div>
     </div>
 
-    <!-- STATS -->
     <div class="dash-stats">
-      <div class="dash-stat">
-        <h3 id="stat-total">0</h3>
-        <p>Total Listings</p>
-      </div>
-      <div class="dash-stat">
-        <h3 id="stat-bags">0</h3>
-        <p>Bags</p>
-      </div>
-      <div class="dash-stat">
-        <h3 id="stat-shoes">0</h3>
-        <p>Shoes</p>
-      </div>
-      <div class="dash-stat">
-        <h3 id="stat-clothing">0</h3>
-        <p>Clothing</p>
-      </div>
+      <div class="dash-stat"><h3 id="stat-total">0</h3><p>Total Listings</p></div>
+      <div class="dash-stat"><h3 id="stat-bags">0</h3><p>Bags</p></div>
+      <div class="dash-stat"><h3 id="stat-shoes">0</h3><p>Shoes</p></div>
+      <div class="dash-stat"><h3 id="stat-clothing">0</h3><p>Clothing</p></div>
     </div>
 
-    <!-- ADD ITEM FORM -->
-    <div class="section-title">
-      <span>List an Item</span>
-      Add a New Product
-    </div>
+    <div class="section-title"><span>List an Item</span>Add a New Product</div>
     <div class="add-item-card">
-
-      <!-- Image upload zone -->
       <div class="img-upload-zone" id="upload-zone" onclick="document.getElementById('item-img-input').click()">
         <span class="upload-icon">📷</span>
-        <p class="upload-label">
-          Click to upload a product photo<br/>
-          <small style="opacity:.7">JPG, PNG, WEBP — max 5 MB</small>
-        </p>
+        <p class="upload-label">Click to upload a product photo<br/><small style="opacity:.7">JPG, PNG, WEBP — max 5 MB</small></p>
         <button class="img-overlay-btn" onclick="event.stopPropagation(); resetImage()">Change Photo</button>
-        <!-- preview injected here -->
       </div>
       <input type="file" id="item-img-input" accept="image/*" />
 
       <div class="form-row">
-        <div class="form-group">
-          <label>Item Name</label>
-          <input type="text" id="item-name" placeholder="e.g. Black Leather Tote" maxlength="60" />
-        </div>
-        <div class="form-group">
-          <label>Price (Ksh)</label>
-          <input type="number" id="item-price" placeholder="e.g. 18500" min="1" />
-        </div>
+        <div class="form-group"><label>Item Name</label><input type="text" id="item-name" placeholder="e.g. Black Leather Tote" maxlength="60" /></div>
+        <div class="form-group"><label>Price (Ksh)</label><input type="number" id="item-price" placeholder="e.g. 18500" min="1" /></div>
       </div>
 
       <div class="form-row">
-        <div class="form-group">
-          <label>Category</label>
-          <select id="item-cat">
-            <option value="">Select category…</option>
-            <option value="bags">Handbag</option>
-            <option value="shoes">Shoes</option>
-            <option value="clothing">Clothing</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Condition</label>
-          <select id="item-condition">
-            <option value="Like New">Like New</option>
-            <option value="Excellent">Excellent</option>
-            <option value="Good">Good</option>
-            <option value="Fair">Fair</option>
-          </select>
-        </div>
+        <div class="form-group"><label>Category</label><select id="item-cat"><option value="">Select category…</option><option value="bags">Handbag</option><option value="shoes">Shoes</option><option value="clothing">Clothing</option></select></div>
+        <div class="form-group"><label>Condition</label><select id="item-condition"><option value="Like New">Like New</option><option value="Excellent">Excellent</option><option value="Good">Good</option><option value="Fair">Fair</option></select></div>
       </div>
 
-      <div class="form-group" style="margin-bottom:0">
-        <label>Description (optional)</label>
-        <textarea id="item-desc" placeholder="Add any details — size, colour, brand, wear notes…"></textarea>
-      </div>
+      <div class="form-group" style="margin-bottom:0"><label>Description (optional)</label><textarea id="item-desc" placeholder="Add any details — size, colour, brand, wear notes…"></textarea></div>
 
       <div class="form-actions">
         <button class="btn-primary" onclick="addListing()">✦ List for Sale</button>
@@ -537,40 +152,64 @@
       </div>
     </div>
 
-    <!-- MY LISTINGS -->
-    <div class="section-title" style="margin-top:1rem">
-      <span>My Listings</span>
-      Items Ready for Sale
-    </div>
-    <div class="listings-grid" id="listings-grid">
-      <!-- rendered by JS -->
-    </div>
+    <div class="section-title" style="margin-top:1rem"><span>My Listings</span>Items Ready for Sale</div>
+    <div class="listings-grid" id="listings-grid"></div>
+  </div>
 
-  </div><!-- /dash-wrap -->
-
-  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
   <script>
-    // ── THEME ─────────────────────────────────────────────────────────────────
-    const themeBtn = document.getElementById('theme-toggle');
-    if (localStorage.getItem('theme') === 'dark') {
-      document.body.classList.add('dark');
-      themeBtn.textContent = '☀️';
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
-    themeBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      const isDark = document.body.classList.contains('dark');
-      themeBtn.textContent = isDark ? '☀️' : '🌙';
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
 
-    // ── HAMBURGER ─────────────────────────────────────────────────────────────
+    function safeStorageGet(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (raw === null) return fallback;
+        const parsed = JSON.parse(raw);
+        return parsed ?? fallback;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    function safeStorageSet(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch (error) {
+        // Ignore storage quota or restricted mode issues.
+      }
+    }
+
+    const themeBtn = document.getElementById('theme-toggle');
+    function applyTheme(isDark) {
+      document.body.classList.toggle('dark', isDark);
+      if (!themeBtn) return;
+      themeBtn.textContent = isDark ? '☀️' : '🌙';
+      themeBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+      themeBtn.setAttribute('aria-pressed', String(isDark));
+    }
+    if (themeBtn) {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(savedTheme ? savedTheme === 'dark' : prefersDark);
+      themeBtn.addEventListener('click', () => {
+        const nextDark = !document.body.classList.contains('dark');
+        applyTheme(nextDark);
+        safeStorageSet('theme', nextDark ? 'dark' : 'light');
+      });
+    }
+
     document.getElementById('hamburger').addEventListener('click', () => {
       document.getElementById('nav-links').classList.toggle('open');
     });
 
-    // ── TOAST ─────────────────────────────────────────────────────────────────
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -578,36 +217,29 @@
       setTimeout(() => t.classList.remove('show'), 2800);
     }
 
-    // ── PROFILE ───────────────────────────────────────────────────────────────
     function loadProfile() {
-      const p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
-      if (p.name)  document.getElementById('seller-name').value  = p.name;
+      const p = safeStorageGet('sellerProfile', {});
+      if (p.name) document.getElementById('seller-name').value = p.name;
       if (p.email) document.getElementById('seller-email').value = p.email;
       if (p.phone) document.getElementById('seller-phone').value = p.phone;
       if (p.avatar) {
         document.getElementById('avatar-img').src = p.avatar;
-        // update ui-avatars fallback name
-        const name = p.name || 'Seller';
-        document.getElementById('avatar-img').alt = name;
+        document.getElementById('avatar-img').alt = p.name || 'Seller';
       } else if (p.name) {
-        document.getElementById('avatar-img').src =
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=e8a0b0&color=fff&size=88&bold=true`;
+        document.getElementById('avatar-img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=e8a0b0&color=fff&size=88&bold=true`;
       }
     }
 
     function saveProfile() {
-      const name  = document.getElementById('seller-name').value.trim();
+      const name = document.getElementById('seller-name').value.trim();
       const email = document.getElementById('seller-email').value.trim();
       const phone = document.getElementById('seller-phone').value.trim();
       const avatar = document.getElementById('avatar-img').src;
+      const p = safeStorageGet('sellerProfile', {});
+      safeStorageSet('sellerProfile', { ...p, name, email, phone, avatar });
 
-      const p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
-      localStorage.setItem('sellerProfile', JSON.stringify({ ...p, name, email, phone, avatar }));
-
-      // Update avatar initials if no custom photo uploaded
       if (!p.avatarCustom && name) {
-        document.getElementById('avatar-img').src =
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=e8a0b0&color=fff&size=88&bold=true`;
+        document.getElementById('avatar-img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=e8a0b0&color=fff&size=88&bold=true`;
       }
 
       const msg = document.getElementById('profile-saved-msg');
@@ -616,41 +248,33 @@
       showToast('✓ Profile saved');
     }
 
-    // Avatar file upload
     document.getElementById('avatar-input').addEventListener('change', function () {
       const file = this.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = (e) => {
         document.getElementById('avatar-img').src = e.target.result;
-        const p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
-        localStorage.setItem('sellerProfile', JSON.stringify({ ...p, avatar: e.target.result, avatarCustom: true }));
+        const p = safeStorageGet('sellerProfile', {});
+        safeStorageSet('sellerProfile', { ...p, avatar: e.target.result, avatarCustom: true });
         showToast('Profile photo updated');
       };
       reader.readAsDataURL(file);
     });
 
-    // ── IMAGE UPLOAD ──────────────────────────────────────────────────────────
     let currentImageDataUrl = null;
-
     document.getElementById('item-img-input').addEventListener('change', function () {
       const file = this.files[0];
       if (!file) return;
-
       if (file.size > 5 * 1024 * 1024) {
         showToast('⚠ Image must be under 5 MB');
         return;
       }
-
       const reader = new FileReader();
       reader.onload = (e) => {
         currentImageDataUrl = e.target.result;
         const zone = document.getElementById('upload-zone');
-
-        // Remove any existing preview img
         const existing = zone.querySelector('img.preview-img');
         if (existing) existing.remove();
-
         const img = document.createElement('img');
         img.src = currentImageDataUrl;
         img.className = 'preview-img';
@@ -669,23 +293,22 @@
       document.getElementById('item-img-input').value = '';
     }
 
-    // ── LISTINGS STORE ────────────────────────────────────────────────────────
     function getListings() {
-      return JSON.parse(localStorage.getItem('sellerListings') || '[]');
+      return Array.isArray(safeStorageGet('sellerListings', [])) ? safeStorageGet('sellerListings', []) : [];
     }
+
     function saveListings(listings) {
-      localStorage.setItem('sellerListings', JSON.stringify(listings));
+      safeStorageSet('sellerListings', listings);
     }
 
     function addListing() {
-      const name      = document.getElementById('item-name').value.trim();
-      const priceRaw  = document.getElementById('item-price').value.trim();
-      const cat       = document.getElementById('item-cat').value;
+      const name = document.getElementById('item-name').value.trim();
+      const priceRaw = document.getElementById('item-price').value.trim();
+      const cat = document.getElementById('item-cat').value;
       const condition = document.getElementById('item-condition').value;
-      const desc      = document.getElementById('item-desc').value.trim();
-      const errEl     = document.getElementById('form-error');
+      const desc = document.getElementById('item-desc').value.trim();
+      const errEl = document.getElementById('form-error');
 
-      // Validation
       if (!name || !priceRaw || !cat || !currentImageDataUrl) {
         errEl.style.display = 'block';
         setTimeout(() => errEl.style.display = 'none', 3000);
@@ -695,7 +318,7 @@
 
       const price = parseInt(priceRaw, 10);
       const listing = {
-        id:        Date.now(),
+        id: Date.now(),
         name,
         price,
         priceLabel: 'Ksh ' + price.toLocaleString(),
@@ -704,26 +327,24 @@
         desc,
         img: currentImageDataUrl,
         createdAt: new Date().toISOString(),
-        status: 'live',
+        status: 'live'
       };
 
       const listings = getListings();
-      listings.unshift(listing); // newest first
+      listings.unshift(listing);
       saveListings(listings);
-
       resetForm();
       renderListings();
       updateStats();
       showToast('🎉 Item listed for sale!');
-      // Smooth scroll to listings
       document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function resetForm() {
-      document.getElementById('item-name').value    = '';
-      document.getElementById('item-price').value   = '';
-      document.getElementById('item-cat').value     = '';
-      document.getElementById('item-desc').value    = '';
+      document.getElementById('item-name').value = '';
+      document.getElementById('item-price').value = '';
+      document.getElementById('item-cat').value = '';
+      document.getElementById('item-desc').value = '';
       document.getElementById('item-condition').value = 'Like New';
       resetImage();
     }
@@ -737,14 +358,12 @@
       showToast('Listing removed');
     }
 
-    // ── RENDER LISTINGS ───────────────────────────────────────────────────────
     const catLabels = { bags: 'Handbag', shoes: 'Shoes', clothing: 'Clothing' };
-    const catIcons  = { bags: '👜', shoes: '👠', clothing: '👗' };
+    const catIcons = { bags: '👜', shoes: '👠', clothing: '👗' };
 
     function renderListings() {
       const grid = document.getElementById('listings-grid');
       const listings = getListings();
-
       if (!listings.length) {
         grid.innerHTML = `
           <div class="empty-listings">
@@ -757,15 +376,13 @@
       grid.innerHTML = listings.map(l => `
         <div class="listing-card" id="card-${l.id}">
           <div class="listing-img">
-            ${l.img
-              ? `<img src="${l.img}" alt="${escHtml(l.name)}" />`
-              : `<span class="no-img">${catIcons[l.cat] || '🛍'}</span>`}
+            ${l.img ? `<img src="${l.img}" alt="${escapeHtml(l.name)}" />` : `<span class="no-img">${catIcons[l.cat] || '🛍'}</span>`}
           </div>
           <div class="listing-body">
             <div class="listing-cat">${catLabels[l.cat] || l.cat}</div>
-            <div class="listing-name">${escHtml(l.name)}</div>
-            <div class="listing-price">${escHtml(l.priceLabel)}</div>
-            ${l.condition ? `<div style="font-size:.78rem;color:var(--text-muted);margin-top:.3rem">Condition: ${escHtml(l.condition)}</div>` : ''}
+            <div class="listing-name">${escapeHtml(l.name)}</div>
+            <div class="listing-price">${escapeHtml(l.priceLabel)}</div>
+            ${l.condition ? `<div style="font-size:.78rem;color:var(--text-muted);margin-top:.3rem">Condition: ${escapeHtml(l.condition)}</div>` : ''}
             <div class="listing-status status-live">● Live in Store</div>
             <div class="listing-actions">
               <button class="btn-delete" onclick="deleteListing(${l.id})">Remove</button>
@@ -777,22 +394,12 @@
 
     function updateStats() {
       const listings = getListings();
-      document.getElementById('stat-total').textContent    = listings.length;
-      document.getElementById('stat-bags').textContent     = listings.filter(l => l.cat === 'bags').length;
-      document.getElementById('stat-shoes').textContent    = listings.filter(l => l.cat === 'shoes').length;
+      document.getElementById('stat-total').textContent = listings.length;
+      document.getElementById('stat-bags').textContent = listings.filter(l => l.cat === 'bags').length;
+      document.getElementById('stat-shoes').textContent = listings.filter(l => l.cat === 'shoes').length;
       document.getElementById('stat-clothing').textContent = listings.filter(l => l.cat === 'clothing').length;
     }
 
-    // Basic HTML escape to prevent XSS from user input in innerHTML
-    function escHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    // ── INIT ──────────────────────────────────────────────────────────────────
     loadProfile();
     renderListings();
     updateStats();
@@ -802,22 +409,20 @@
       const container = document.getElementById('nav-auth');
       if (!container) return;
 
-      const user = JSON.parse(localStorage.getItem('authUser') || 'null');
-
+      const user = safeStorageGet('authUser', null);
       if (!user) {
         container.innerHTML = `<a class="nav-profile-btn" href="login.html?redirect=dashboard.html" title="Sign in">👤</a>`;
         return;
       }
 
-      const p = JSON.parse(localStorage.getItem('sellerProfile') || '{}');
-      const avatarSrc = p.avatar ||
-        `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=e8a0b0&color=fff&size=36&bold=true`;
-      const firstName = user.name.split(' ')[0];
+      const p = safeStorageGet('sellerProfile', {});
+      const avatarSrc = p.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(String(user.name || 'User'))}&background=e8a0b0&color=fff&size=36&bold=true`;
+      const firstName = String(user.name || 'User').split(' ')[0];
 
       container.innerHTML = `
-        <button class="nav-avatar-btn" id="nav-user-btn" onclick="toggleAuthDropdown()" title="${user.name}">
-          <img class="nav-avatar-img" src="${avatarSrc}" alt="${firstName}" />
-          <span class="nav-avatar-name">${firstName}</span>
+        <button class="nav-avatar-btn" id="nav-user-btn" onclick="toggleAuthDropdown()" title="${escapeHtml(user.name || 'User')}">
+          <img class="nav-avatar-img" src="${escapeHtml(avatarSrc)}" alt="${escapeHtml(firstName)}" />
+          <span class="nav-avatar-name">${escapeHtml(firstName)}</span>
           <span class="nav-avatar-caret">▾</span>
         </button>
         <div class="nav-dropdown" id="nav-dropdown">
