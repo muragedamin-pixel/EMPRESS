@@ -1,11 +1,11 @@
-# PRE LOVED Store
+# EMPRESS Store
 
-A pre-loved fashion e-commerce site selling handbags, shoes & clothing — priced in Kenyan Shillings.
+A EMPRESS fashion e-commerce site selling handbags, shoes & clothing — priced in Kenyan Shillings.
 
 ## Project Structure
 
 ```
-legendary/
+EMPRESS/
 ├── index.html        # Main storefront
 ├── product.html      # Product detail page
 ├── styles.css        # All styles (dark/light mode)
