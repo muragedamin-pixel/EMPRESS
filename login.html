@@ -322,7 +322,7 @@
 
       setLoading('btn-login', true);
       try {
-        const res  = await fetch(`${SERVER_URL}/auth/login`, {
+        const res  = await fetch(`${https://empress.production.up.railway.app/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -364,7 +364,7 @@
 
       setLoading('btn-register', true);
       try {
-        const res  = await fetch(`${SERVER_URL}/auth/register`, {
+        const res  = await fetch(`${https://empress.production.up.railway.app/auth/login/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password }),
