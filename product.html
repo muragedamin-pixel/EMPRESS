@@ -59,7 +59,7 @@
 </head>
 <body>
 
-  <!-- NAV -->
+  <!-- NAV --> 
   <nav>
     <div class="nav-logo">EMPRESS</div>
     <ul class="nav-links" id="nav-links">
@@ -113,7 +113,7 @@
     document.getElementById('pd-price').textContent = price || '';
 
     // ── Railway server URL ──────────────────────────────────────────────────
-    const SERVER_URL = 'https://empress-production.up.railway.app';
+    const SERVER_URL = 'https://empress-production9.up.railway.app';
 
     // ── Buy Now → STK Push ──────────────────────────────────────────────────
     document.getElementById('buy-btn').addEventListener('click', async () => {
@@ -126,9 +126,9 @@
 
       try {
         const amount   = (price || '0').replace(/[^0-9]/g, '');
-        const itemName = name || 'PRE LOVED Item';
+        const itemName = name || 'EMPRESS' Item';
 
-        const res  = await fetch(`${SERVER_URL}/stk-push`, {
+        const res  = await fetch(`${empress-production9.up.railway.app}/stk-push`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ phone, amount, itemName }),
