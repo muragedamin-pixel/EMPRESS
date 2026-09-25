@@ -16,7 +16,7 @@
 }
 
 body {
-  background-color: linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 100%);
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 100%);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -68,7 +68,6 @@ ul { list-style: none; }
 
 /* ── NAV ── */
 nav {
-  backgound: black;
   position: sticky; top: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 1.1rem 5%; background: rgba(253,248,245,.92);
