@@ -253,11 +253,11 @@
   </div>
 
   <script>
-    // ── SERVER URL ────────────────────────────────────────────────────────────
+    // ── SERVER URL ──────────────────────────────────────────────────────────
     // Replace with your actual Railway URL
     const SERVER_URL = 'https://empress-production9.up.railway.app';
 
-    // ── THEME ─────────────────────────────────────────────────────────────────
+    // ── THEME ────────────────────────────────────────────────────────────
     const themeBtn = document.getElementById('theme-toggle');
     if (localStorage.getItem('theme') === 'dark') {
       document.body.classList.add('dark');
@@ -274,7 +274,7 @@
     const existing = localStorage.getItem('authToken');
     if (existing) window.location.href = 'dashboard.html';
 
-    // ── TAB SWITCH ────────────────────────────────────────────────────────────
+    // ── TAB SWITCH ──────────────────────────────────────────────────────────
     function switchTab(tab) {
       const isLogin = tab === 'login';
       document.getElementById('tab-login').classList.toggle('active', isLogin);
@@ -292,7 +292,7 @@
       btn.textContent = isText ? '👁' : '🙈';
     }
 
-    // ── ERROR ─────────────────────────────────────────────────────────────────
+    // ── ERROR ────────────────────────────────────────────────────────────
     function showError(msg) {
       const el = document.getElementById('auth-error');
       el.textContent = msg;
@@ -313,7 +313,7 @@
       }
     }
 
-    // ── LOGIN ─────────────────────────────────────────────────────────────────
+    // ── LOGIN ────────────────────────────────────────────────────────────
     async function submitLogin(e) {
       e.preventDefault();
       hideError();
@@ -322,7 +322,7 @@
 
       setLoading('btn-login', true);
       try {
-        const res  = await fetch(`${https://empress-production9.up.railway.app/auth/login`, {
+        const res  = await fetch(`${SERVER_URL}/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -349,7 +349,7 @@
       }
     }
 
-    // ── REGISTER ──────────────────────────────────────────────────────────────
+    // ── REGISTER ───────────────────────────────────────────────────────────
     async function submitRegister(e) {
       e.preventDefault();
       hideError();
@@ -364,7 +364,7 @@
 
       setLoading('btn-register', true);
       try {
-        const res  = await fetch(`${https:/empress-production9.up.railway.app/auth/login/auth/register`, {
+        const res  = await fetch(`${SERVER_URL}/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password }),
