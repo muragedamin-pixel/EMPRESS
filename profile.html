@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PRE LOVED — My Profile</title>
+  <title>EMPRESS — My Profile</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
@@ -382,7 +382,7 @@
 
   <!-- NAV -->
   <nav>
-    <div class="nav-logo">PRE LOVED</div>
+    <div class="nav-logo">EMPRESS</div>
     <ul class="nav-links" id="nav-links">
       <li><a href="index.html#categories">Shop</a></li>
       <li><a href="index.html#collection">Collection</a></li>
@@ -666,7 +666,7 @@
 
   <script>
     // ── SERVER URL ─────────────────────────────────────────────────────────────
-    const SERVER_URL = 'https://your-railway-url.up.railway.app';
+    const SERVER_URL = 'https://empress-production9.up.railway.app';
 
     // ── THEME ──────────────────────────────────────────────────────────────────
     const themeBtn = document.getElementById('theme-toggle');
@@ -802,8 +802,8 @@
     }
 
     // ── PHOTO SLOTS ────────────────────────────────────────────────────────────
-    const MAX_PHOTOS = 4;
-    const photoData  = [null, null, null, null]; // base64 or null per slot
+    const MAX_PHOTOS = 10;
+    const photoData  = [null, null, null, null, null, null, null, null, null, null]; // base64 or null per slot
 
     function buildPhotoGrid() {
       const grid = document.getElementById('photo-grid');
