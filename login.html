@@ -322,11 +322,16 @@
 
       setLoading('btn-login', true);
       try {
-        const res  = await fetch(`${SERVER_URL}/auth/login`, {
+        const res = await fetch(`${SERVER_URL}/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
         });
+
+        if (!res.ok) {
+          throw new Error(`Server returned ${res.status}`);
+        }
+
         const data = await res.json();
 
         if (!data.success) {
@@ -335,15 +340,14 @@
           return;
         }
 
-        // Save token + user info
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('authUser', JSON.stringify(data.user));
 
-        // Redirect — go to dashboard or wherever they came from
         const redirect = new URLSearchParams(window.location.search).get('redirect') || 'dashboard.html';
         window.location.href = redirect;
 
-      } catch {
+      } catch (error) {
+        console.error('Login error:', error);
         showError('Could not reach the server. Please try again.');
         setLoading('btn-login', false);
       }
@@ -364,11 +368,16 @@
 
       setLoading('btn-register', true);
       try {
-        const res  = await fetch(`${SERVER_URL}/auth/register`, {
+        const res = await fetch(`${SERVER_URL}/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password }),
         });
+
+        if (!res.ok) {
+          throw new Error(`Server returned ${res.status}`);
+        }
+
         const data = await res.json();
 
         if (!data.success) {
@@ -383,7 +392,8 @@
         const redirect = new URLSearchParams(window.location.search).get('redirect') || 'dashboard.html';
         window.location.href = redirect;
 
-      } catch {
+      } catch (error) {
+        console.error('Register error:', error);
         showError('Could not reach the server. Please try again.');
         setLoading('btn-register', false);
       }
